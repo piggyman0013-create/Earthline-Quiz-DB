@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earthline — Sales Training Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #0f2a4a;
+  --navy2:   #1a3a5c;
+  --navy3:   #1e4976;
+  --sky:     #2d8cf0;
+  --sky-lt:  #e8f3fe;
+  --accent:  #00b4d8;
+  --green:   #10b981;
+  --green-lt:#d1fae5;
+  --red:     #ef4444;
+  --red-lt:  #fee2e2;
+  --amber:   #f59e0b;
+  --amber-lt:#fef3c7;
+  --bg:      #f0f4f8;
+  --surface: #ffffff;
+  --border:  #d1dce8;
+  --text:    #0f2a4a;
+  --muted:   #5a7a9a;
+  --mono:    'IBM Plex Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  font-family:'IBM Plex Sans Thai',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.6;
+}
+
+/* ── Header ── */
+.header{
+  background:var(--navy);
+  color:#fff;
+  padding:0 24px;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 2px 12px rgba(0,0,0,.25);
+}
+.header-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:600;
+  font-size:15px;
+  letter-spacing:.02em;
+}
+.header-brand-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.header-right{display:flex;align-items:center;gap:8px}
+.btn-admin{
+  font-size:12px;
+  font-family:var(--mono);
+  padding:4px 12px;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:4px;
+  background:transparent;
+  color:#fff;
+  cursor:pointer;
+  transition:background .15s;
+}
+.btn-admin:hover{background:rgba(255,255,255,.1)}
+.badge-admin{
+  font-size:11px;
+  font-family:var(--mono);
+  padding:2px 8px;
+  background:var(--accent);
+  color:var(--navy);
+  border-radius:3px;
+  font-weight:600;
+}
+
+/* ── Nav tabs ── */
+.nav{
+  background:var(--navy2);
+  display:flex;
+  gap:2px;
+  padding:0 20px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.nav-tab{
+  font-size:13px;
+  padding:10px 16px;
+  color:rgba(255,255,255,.55);
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:color .15s,border-color .15s;
+  user-select:none;
+  white-space:nowrap;
+}
+.nav-tab:hover{color:rgba(255,255,255,.8)}
+.nav-tab.active{color:#fff;border-bottom-color:var(--accent)}
+.nav-tab.hidden{display:none}
+
+/* ── Container ── */
+.container{max-width:900px;margin:0 auto;padding:28px 20px}
+
+/* ── Card ── */
+.card{
+  background:var(--surface);
+  border-radius:10px;
+  border:1px solid var(--border);
+  padding:24px;
+  margin-bottom:16px;
+}
+.card-sm{padding:16px 20px}
+
+/* ── Product grid ── */
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:14px;
+}
+.product-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px 20px;
+  cursor:pointer;
+  transition:border-color .15s,transform .12s,box-shadow .15s;
+  position:relative;
+  overflow:hidden;
+}
+.product-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--navy2),var(--accent));
+  opacity:0;
+  transition:opacity .15s;
+}
+.product-card:hover{
+  border-color:var(--sky);
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(15,42,74,.12);
+}
+.product-card:hover::before{opacity:1}
+.product-name{font-weight:600;font-size:14px;margin-bottom:4px}
+.product-desc{font-size:12px;color:var(--muted)}
+.product-count{
+  margin-top:10px;
+  font-size:11px;
+  font-family:var(--mono);
+  color:var(--sky);
+  font-weight:500;
+}
+.product-actions{
+  position:absolute;
+  top:12px;right:12px;
+  display:flex;gap:4px;
+  opacity:0;
+  transition:opacity .15s;
+}
+.product-card:hover .product-actions{opacity:1}
+.btn-icon{
+  width:26px;height:26px;
+  border-radius:4px;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;
+  color:var(--muted);
+  transition:background .12s,color .12s;
+}
+.btn-icon:hover{background:var(--sky-lt);color:var(--sky)}
+.btn-icon.danger:hover{background:var(--red-lt);color:var(--red)}
+
+/* ── Section header ── */
+.section-hd{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+  gap:12px;
+}
+.section-title{font-size:18px;font-weight:600;color:var(--navy)}
+.section-sub{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* ── Buttons ── */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 18px;
+  border-radius:6px;
+  font-size:13px;
+  font-weight:500;
+  cursor:pointer;
+  border:none;
+  transition:background .12s,transform .1s;
+  font-family:'IBM Plex Sans Thai',sans-serif;
+  white-space:nowrap;
+}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--navy2);color:#fff}
+.btn-primary:hover{background:var(--navy3)}
+.btn-sky{background:var(--sky);color:#fff}
+.btn-sky:hover{background:#1a7de0}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:#0da271}
+.btn-ghost{background:transparent;color:var(--navy2);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--sky-lt);border-color:var(--sky)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{background:#dc2626}
+.btn-sm{padding:5px 12px;font-size:12px}
+
+/* ── Question list ── */
+.q-row{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:14px 16px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  margin-bottom:8px;
+  background:var(--surface);
+  transition:border-color .12s;
+}
+.q-row:hover{border-color:var(--sky)}
+.q-num{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--muted);
+  padding:2px 6px;
+  background:var(--bg);
+  border-radius:4px;
+  flex-shrink:0;
+  margin-top:2px;
+}
+.q-text{font-size:13px;flex:1;line-height:1.5}
+.q-ans{
+  font-family:var(--mono);
+  font-size:12px;
+  font-weight:600;
+  color:var(--green);
+  flex-shrink:0;
+  margin-top:2px;
+}
+.q-actions{display:flex;gap:6px;flex-shrink:0;margin-top:1px}
+
+/* ── Form ── */
+.form-group{margin-bottom:16px}
+.form-label{
+  display:block;
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+  margin-bottom:6px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.form-input,
+.form-select,
+.form-textarea{
+  width:100%;
+  padding:9px 12px;
+  border:1px solid var(--border);
+  border-radius:6px;
+  font-size:14px;
+  font-family:'IBM Plex Sans Thai',sans-serif;
+  color:var(--text);
+  background:#fff;
+  transition:border-color .12s;
+  outline:none;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus{border-color:var(--sky)}
+.form-textarea{resize:vertical;min-height:72px}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt-label{
+  font-size:11px;
+  font-family:var(--mono);
+  font-weight:600;
+  color:var(--navy2);
+  margin-bottom:4px;
+}
+
+/* ── Quiz ── */
+.quiz-header{
+  background:var(--navy);
+  color:#fff;
+  border-radius:10px;
+  padding:20px 24px;
+  margin-bottom:20px;
+}
+.quiz-product{font-size:12px;color:rgba(255,255,255,.55);margin-bottom:4px;font-family:var(--mono)}
+.quiz-name{font-size:18px;font-weight:600}
+.progress-bar-track{
+  height:4px;
+  background:rgba(255,255,255,.2);
+  border-radius:2px;
+  margin-top:16px;
+  overflow:hidden;
+}
+.progress-bar-fill{
+  height:100%;
+  background:var(--accent);
+  border-radius:2px;
+  transition:width .3s ease;
+}
+.quiz-counter{
+  font-size:12px;
+  color:rgba(255,255,255,.55);
+  margin-top:8px;
+  font-family:var(--mono);
+}
+
+.question-text{
+  font-size:16px;
+  font-weight:500;
+  line-height:1.65;
+  margin-bottom:20px;
+}
+.options-list{display:flex;flex-direction:column;gap:10px}
+.option-btn{
+  width:100%;
+  text-align:left;
+  padding:13px 16px;
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  background:#fff;
+  font-size:14px;
+  font-family:'IBM Plex Sans Thai',sans-serif;
+  cursor:pointer;
+  transition:border-color .12s,background .12s;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  line-height:1.5;
+}
+.option-btn:not(:disabled):hover{border-color:var(--sky);background:var(--sky-lt)}
+.option-btn.correct{border-color:var(--green);background:var(--green-lt)}
+.option-btn.wrong{border-color:var(--red);background:var(--red-lt)}
+.option-btn:disabled{cursor:default}
+.opt-key{
+  font-family:var(--mono);
+  font-weight:600;
+  font-size:13px;
+  color:var(--muted);
+  flex-shrink:0;
+  width:20px;
+}
+.explanation-box{
+  margin-top:16px;
+  padding:14px 16px;
+  background:var(--sky-lt);
+  border-left:3px solid var(--sky);
+  border-radius:0 6px 6px 0;
+  font-size:13px;
+  color:var(--navy2);
+  line-height:1.6;
+}
+.next-btn-wrap{margin-top:20px;text-align:right}
+
+/* ── Result ── */
+.result-hero{
+  text-align:center;
+  padding:32px 24px;
+  background:var(--navy);
+  color:#fff;
+  border-radius:10px;
+  margin-bottom:20px;
+}
+.result-score-big{
+  font-size:64px;
+  font-weight:300;
+  font-family:var(--mono);
+  line-height:1;
+  margin-bottom:8px;
+}
+.result-pct{font-size:24px;opacity:.6}
+.result-verdict{
+  font-size:20px;
+  font-weight:600;
+  margin-top:12px;
+}
+.score-bar-track{
+  height:8px;
+  background:rgba(255,255,255,.2);
+  border-radius:4px;
+  margin:16px auto;
+  max-width:300px;
+  overflow:hidden;
+}
+.score-bar-fill{
+  height:100%;
+  border-radius:4px;
+  transition:width 1s ease;
+}
+.result-meta{
+  display:flex;
+  justify-content:center;
+  gap:24px;
+  font-size:13px;
+  opacity:.7;
+  margin-top:8px;
+}
+.result-detail-row{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+  font-size:13px;
+}
+.result-detail-row:last-child{border-bottom:none}
+.rdr-num{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--muted);
+  width:28px;
+  flex-shrink:0;
+  margin-top:2px;
+}
+.rdr-q{flex:1;line-height:1.5}
+.rdr-badge{
+  flex-shrink:0;
+  font-size:11px;
+  font-family:var(--mono);
+  font-weight:600;
+  padding:2px 8px;
+  border-radius:4px;
+  margin-top:2px;
+}
+.badge-correct{background:var(--green-lt);color:var(--green)}
+.badge-wrong{background:var(--red-lt);color:var(--red)}
+
+/* ── History ── */
+.history-row{
+  display:grid;
+  grid-template-columns:1fr 100px 80px 80px 80px;
+  align-items:center;
+  gap:12px;
+  padding:12px 16px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  margin-bottom:8px;
+  background:var(--surface);
+  font-size:13px;
+}
+.history-header{
+  font-size:11px;
+  font-family:var(--mono);
+  color:var(--muted);
+  font-weight:600;
+  border-color:transparent;
+  background:transparent;
+  padding-left:16px;
+  margin-bottom:0;
+}
+.tag-pass{
+  font-size:11px;
+  font-family:var(--mono);
+  font-weight:600;
+  padding:2px 8px;
+  border-radius:4px;
+  background:var(--green-lt);
+  color:var(--green);
+}
+.tag-fail{
+  font-size:11px;
+  font-family:var(--mono);
+  font-weight:600;
+  padding:2px 8px;
+  border-radius:4px;
+  background:var(--red-lt);
+  color:var(--red);
+}
+
+/* ── Modal ── */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.5);
+  display:flex;align-items:center;justify-content:center;
+  z-index:200;
+  padding:20px;
+}
+.modal{
+  background:#fff;
+  border-radius:12px;
+  width:100%;
+  max-width:560px;
+  max-height:90vh;
+  overflow-y:auto;
+  padding:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+.modal-title{
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.modal-close{
+  background:none;border:none;cursor:pointer;
+  font-size:20px;color:var(--muted);
+  line-height:1;
+}
+.modal-close:hover{color:var(--text)}
+.modal-footer{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:24px;
+}
+
+/* ── Pre-quiz ── */
+.prequiz-wrap{
+  max-width:480px;
+  margin:40px auto;
+}
+.prequiz-logo{
+  text-align:center;
+  margin-bottom:32px;
+}
+.prequiz-logo-text{
+  font-size:22px;
+  font-weight:600;
+  color:var(--navy);
+}
+.prequiz-logo-sub{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* ── PIN ── */
+.pin-modal .form-input{
+  font-family:var(--mono);
+  font-size:22px;
+  letter-spacing:.2em;
+  text-align:center;
+}
+
+/* ── Loader ── */
+.loader{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:180px;
+  color:var(--muted);
+  gap:10px;
+  font-size:14px;
+}
+.spinner{
+  width:20px;height:20px;
+  border:2px solid var(--border);
+  border-top-color:var(--sky);
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Toast ── */
+#toast{
+  position:fixed;
+  bottom:24px;right:24px;
+  z-index:300;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  pointer-events:none;
+}
+.toast-item{
+  padding:10px 18px;
+  border-radius:6px;
+  font-size:13px;
+  color:#fff;
+  pointer-events:auto;
+  animation:slideUp .25s ease;
+  box-shadow:0 4px 12px rgba(0,0,0,.2);
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.toast-success{background:var(--green)}
+.toast-error{background:var(--red)}
+.toast-info{background:var(--navy2)}
+
+/* ── Misc ── */
+.empty{
+  text-align:center;
+  padding:48px 24px;
+  color:var(--muted);
+  font-size:14px;
+}
+.divider{height:1px;background:var(--border);margin:20px 0}
+.chip{
+  display:inline-block;
+  font-size:11px;
+  font-family:var(--mono);
+  padding:2px 8px;
+  border-radius:4px;
+  background:var(--sky-lt);
+  color:var(--sky);
+  font-weight:600;
+}
+.flex{display:flex;align-items:center;gap:8px}
+.ml-auto{margin-left:auto}
+.api-note{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+/* ── Responsive ── */
+@media(max-width:600px){
+  .product-grid{grid-template-columns:1fr}
+  .options-grid{grid-template-columns:1fr}
+  .history-row{grid-template-columns:1fr 80px 70px}
+  .history-row > *:nth-child(n+4){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-brand-dot"></div>
+    EARTHLINE · Sales Training Quiz
+  </div>
+  <div class="header-right" id="headerRight">
+    <button class="btn-admin" onclick="showPinModal()">Admin</button>
+  </div>
+</div>
+
+<!-- Nav -->
+<div class="nav" id="mainNav">
+  <div class="nav-tab active" data-tab="home" onclick="switchTab('home')">📋 ผลิตภัณฑ์</div>
+  <div class="nav-tab hidden" id="tab-manage" data-tab="manage" onclick="switchTab('manage')">📚 จัดการคำถาม</div>
+  <div class="nav-tab" data-tab="history" onclick="switchTab('history')">🗂 ประวัติผลสอบ</div>
+  <div class="nav-tab" data-tab="settings" onclick="switchTab('settings')">⚙️ ตั้งค่า</div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- ════════════════════════════════════
+     TAB: HOME
+════════════════════════════════════ -->
+<div id="tab-home" class="container">
+  <div class="section-hd">
+    <div>
+      <div class="section-title">เลือกผลิตภัณฑ์</div>
+      <div class="section-sub">เลือกผลิตภัณฑ์ที่ต้องการทดสอบความรู้</div>
+    </div>
+    <button class="btn btn-primary btn-sm" id="addProductBtn" style="display:none" onclick="showProductForm()">+ เพิ่มผลิตภัณฑ์</button>
+  </div>
+  <div id="productGrid" class="product-grid">
+    <div class="loader"><div class="spinner"></div> กำลังโหลด...</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB: MANAGE QUESTIONS
+════════════════════════════════════ -->
+<div id="tab-manage" class="container" style="display:none">
+  <div class="section-hd">
+    <div>
+      <div style="font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:4px" id="manageProductLabel">–</div>
+      <div class="section-title" id="manageTitle">จัดการคำถาม</div>
+    </div>
+    <div class="flex">
+      <button class="btn btn-ghost btn-sm" onclick="switchTab('home')">← กลับ</button>
+      <button class="btn btn-sky btn-sm" onclick="startPreQuiz()">▶ ทดสอบ</button>
+      <button class="btn btn-primary btn-sm" onclick="showQuestionForm()">+ เพิ่มคำถาม</button>
+    </div>
+  </div>
+  <div id="questionList"></div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB: PRE-QUIZ
+════════════════════════════════════ -->
+<div id="tab-prequiz" class="container" style="display:none">
+  <div class="prequiz-wrap">
+    <div class="prequiz-logo">
+      <div class="prequiz-logo-text">📝 แบบทดสอบ</div>
+      <div class="prequiz-logo-sub" id="prequizProductName">–</div>
+    </div>
+    <div class="card">
+      <div class="form-group">
+        <label class="form-label">ชื่อพนักงานขาย</label>
+        <input class="form-input" id="salesNameInput" placeholder="กรอกชื่อ-นามสกุล" autocomplete="off">
+      </div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:20px" id="prequizMeta">–</div>
+      <div class="flex">
+        <button class="btn btn-ghost" onclick="switchTab('manage')">← กลับ</button>
+        <button class="btn btn-sky ml-auto" onclick="startQuiz()">เริ่มทดสอบ →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB: QUIZ
+════════════════════════════════════ -->
+<div id="tab-quiz" class="container" style="display:none">
+  <div class="quiz-header">
+    <div class="quiz-product" id="quizProductLabel">–</div>
+    <div class="quiz-name" id="quizSalesName">–</div>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="quiz-counter" id="quizCounter">0 / 0</div>
+  </div>
+  <div class="card">
+    <div class="question-text" id="questionText">–</div>
+    <div class="options-list" id="optionsList"></div>
+    <div class="explanation-box" id="explanationBox" style="display:none"></div>
+    <div class="next-btn-wrap">
+      <button class="btn btn-sky" id="nextBtn" style="display:none" onclick="nextQuestion()">ข้อถัดไป →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB: RESULT
+════════════════════════════════════ -->
+<div id="tab-result" class="container" style="display:none">
+  <div class="result-hero" id="resultHero">
+    <div class="result-score-big" id="resultScore">–</div>
+    <div class="result-verdict" id="resultVerdict">–</div>
+    <div class="score-bar-track">
+      <div class="score-bar-fill" id="resultBar" style="width:0%"></div>
+    </div>
+    <div class="result-meta" id="resultMeta">–</div>
+  </div>
+  <div class="card">
+    <div style="font-weight:600;margin-bottom:16px;font-size:14px">เฉลยคำตอบ</div>
+    <div id="resultDetail"></div>
+  </div>
+  <div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center">
+    <button class="btn btn-ghost" onclick="switchTab('home')">🏠 กลับหน้าหลัก</button>
+    <button class="btn btn-sky" onclick="retakeQuiz()">🔄 ทำใหม่</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB: HISTORY
+════════════════════════════════════ -->
+<div id="tab-history" class="container" style="display:none">
+  <div class="section-hd">
+    <div>
+      <div class="section-title">ประวัติผลสอบ</div>
+      <div class="section-sub">บันทึกผลการทดสอบทั้งหมด</div>
+    </div>
+    <div class="flex">
+      <select class="form-select" style="width:220px;font-size:13px" id="historyFilter" onchange="loadHistory()">
+        <option value="">— ผลิตภัณฑ์ทั้งหมด —</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" onclick="loadHistory()">↻ รีเฟรช</button>
+    </div>
+  </div>
+  <div id="historyList">
+    <div class="loader"><div class="spinner"></div> กำลังโหลด...</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     TAB: SETTINGS
+════════════════════════════════════ -->
+<div id="tab-settings" class="container" style="display:none">
+  <div class="card" style="max-width:520px">
+    <div style="font-weight:600;margin-bottom:16px">🔗 Google Apps Script URL</div>
+    <div class="form-group">
+      <label class="form-label">Web App URL (จาก Deploy → Manage Deployments)</label>
+      <input class="form-input" id="apiUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
+      <div class="api-note">วาง URL แล้วกด Save — แอปจะใช้ URL นี้เป็น backend</div>
+    </div>
+    <div class="flex">
+      <button class="btn btn-primary" onclick="saveApiUrl()">💾 บันทึก URL</button>
+      <button class="btn btn-ghost btn-sm" onclick="testApi()">🔌 ทดสอบการเชื่อมต่อ</button>
+    </div>
+  </div>
+  <div class="card" style="max-width:520px;margin-top:0">
+    <div style="font-weight:600;margin-bottom:12px">ℹ️ คำแนะนำการ Deploy</div>
+    <ol style="font-size:13px;color:var(--muted);line-height:2;padding-left:20px">
+      <li>เปิด <strong>script.google.com</strong> → สร้าง Project ใหม่</li>
+      <li>วางโค้ดจาก <code style="background:var(--bg);padding:1px 5px;border-radius:3px">Code.gs</code> ลงใน editor</li>
+      <li>กด <strong>Deploy → New Deployment</strong></li>
+      <li>Type: <strong>Web App</strong> | Execute as: <strong>Me</strong> | Access: <strong>Anyone</strong></li>
+      <li>คัดลอก URL มาวางในช่องด้านบน</li>
+      <li>กลับมา Apps Script editor → Run function <strong>seedCeegQuestions</strong> หนึ่งครั้ง</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     MODALS
+════════════════════════════════════ -->
+
+<!-- PIN Modal -->
+<div class="modal-overlay" id="pinModal" style="display:none" onclick="closePinModal(event)">
+  <div class="modal pin-modal" style="max-width:340px">
+    <div class="modal-title">Admin PIN <button class="modal-close" onclick="hidePinModal()">✕</button></div>
+    <div class="form-group">
+      <input class="form-input" id="pinInput" type="password" maxlength="10"
+        placeholder="••••••" onkeydown="if(event.key==='Enter')checkPin()">
+    </div>
+    <div id="pinError" style="color:var(--red);font-size:12px;display:none">PIN ไม่ถูกต้อง</div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="hidePinModal()">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="checkPin()">เข้าสู่ระบบ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Question Form Modal -->
+<div class="modal-overlay" id="qFormModal" style="display:none" onclick="closeQModal(event)">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="qFormTitle">เพิ่มคำถาม</span>
+      <button class="modal-close" onclick="hideQModal()">✕</button>
+    </div>
+    <input type="hidden" id="qEditId">
+    <div class="form-group">
+      <label class="form-label">คำถาม *</label>
+      <textarea class="form-textarea" id="qQuestion" placeholder="พิมพ์คำถาม..." rows="3"></textarea>
+    </div>
+    <div class="options-grid">
+      <div class="form-group">
+        <div class="opt-label">A</div>
+        <input class="form-input" id="qOptA" placeholder="ตัวเลือก A">
+      </div>
+      <div class="form-group">
+        <div class="opt-label">B</div>
+        <input class="form-input" id="qOptB" placeholder="ตัวเลือก B">
+      </div>
+      <div class="form-group">
+        <div class="opt-label">C</div>
+        <input class="form-input" id="qOptC" placeholder="ตัวเลือก C">
+      </div>
+      <div class="form-group">
+        <div class="opt-label">D</div>
+        <input class="form-input" id="qOptD" placeholder="ตัวเลือก D">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">คำตอบที่ถูกต้อง *</label>
+      <select class="form-select" id="qAnswer">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">คำอธิบายเฉลย (ไม่บังคับ)</label>
+      <textarea class="form-textarea" id="qExplanation" placeholder="อธิบายเหตุผลที่คำตอบนี้ถูกต้อง..." rows="2"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="hideQModal()">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="submitQuestion()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product Form Modal -->
+<div class="modal-overlay" id="productFormModal" style="display:none" onclick="closeProductModal(event)">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-title">
+      <span id="productFormTitle">เพิ่มผลิตภัณฑ์</span>
+      <button class="modal-close" onclick="hideProductModal()">✕</button>
+    </div>
+    <input type="hidden" id="productEditId">
+    <div class="form-group">
+      <label class="form-label">ชื่อผลิตภัณฑ์ *</label>
+      <input class="form-input" id="productName" placeholder="ชื่อผลิตภัณฑ์">
+    </div>
+    <div class="form-group">
+      <label class="form-label">คำอธิบาย</label>
+      <input class="form-input" id="productDesc" placeholder="รายละเอียดสั้นๆ">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="hideProductModal()">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="submitProduct()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════════
+const S = {
+  apiUrl:       localStorage.getItem('el_api_url') || '',
+  isAdmin:      false,
+  products:     [],
+  questions:    [],
+  currentProduct: null,
+  // quiz session
+  quiz: {
+    salesName:   '',
+    questions:   [],
+    idx:         0,
+    answers:     [],
+    answered:    false,
+  }
+};
+
+// ════════════════════════════════════════════════════════════
+//  API
+// ════════════════════════════════════════════════════════════
+async function apiGet(params) {
+  if (!S.apiUrl) { showToast('กรุณาตั้งค่า API URL ก่อน','error'); throw new Error('no url'); }
+  const url = S.apiUrl + '?' + new URLSearchParams(params);
+  const r = await fetch(url);
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error);
+  return j.data;
+}
+
+async function apiPost(body) {
+  if (!S.apiUrl) { showToast('กรุณาตั้งค่า API URL ก่อน','error'); throw new Error('no url'); }
+  const r = await fetch(S.apiUrl, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error);
+  return j.data;
+}
+
+// ════════════════════════════════════════════════════════════
+//  TABS
+// ════════════════════════════════════════════════════════════
+const TABS = ['home','manage','prequiz','quiz','result','history','settings'];
+function switchTab(name) {
+  TABS.forEach(t => {
+    document.getElementById('tab-'+t).style.display = t===name ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-tab[data-tab]').forEach(el => {
+    el.classList.toggle('active', el.dataset.tab === name);
+  });
+  if (name === 'history') loadHistory();
+}
+
+// ════════════════════════════════════════════════════════════
+//  HOME — PRODUCTS
+// ════════════════════════════════════════════════════════════
+async function loadProducts() {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '<div class="loader"><div class="spinner"></div> กำลังโหลด...</div>';
+  try {
+    S.products = await apiGet({ action:'getProducts' });
+    // load question counts per product
+    const qAll = await apiGet({ action:'getQuestions' });
+    renderProducts(qAll);
+  } catch(e) {
+    grid.innerHTML = `<div class="empty">
+      ⚠️ ไม่สามารถเชื่อมต่อได้<br>
+      <span style="font-size:12px">กรุณาตั้งค่า API URL ในแท็บ ⚙️ ตั้งค่า</span>
+    </div>`;
+  }
+}
+
+function renderProducts(allQ) {
+  const grid = document.getElementById('productGrid');
+  if (!S.products.length) {
+    grid.innerHTML = '<div class="empty">ยังไม่มีผลิตภัณฑ์</div>';
+    return;
+  }
+  const countMap = {};
+  allQ.forEach(q => { countMap[q.productId] = (countMap[q.productId]||0)+1; });
+
+  grid.innerHTML = S.products.map(p => `
+    <div class="product-card" onclick="openProduct('${p.id}')">
+      ${S.isAdmin ? `
+      <div class="product-actions" onclick="event.stopPropagation()">
+        <button class="btn-icon" onclick="showProductForm('${p.id}')" title="แก้ไข">✏️</button>
+        <button class="btn-icon danger" onclick="deleteProductConfirm('${p.id}','${p.name}')" title="ลบ">🗑</button>
+      </div>` : ''}
+      <div class="product-name">${p.name}</div>
+      <div class="product-desc">${p.description}</div>
+      <div class="product-count">${countMap[p.id]||0} คำถาม</div>
+    </div>
+  `).join('');
+}
+
+async function openProduct(id) {
+  S.currentProduct = S.products.find(p => p.id === id);
+  if (!S.currentProduct) return;
+  await loadQuestions(id);
+  document.getElementById('manageProductLabel').textContent = S.currentProduct.description;
+  document.getElementById('manageTitle').textContent = S.currentProduct.name;
+  switchTab('manage');
+}
+
+// ════════════════════════════════════════════════════════════
+//  MANAGE QUESTIONS
+// ════════════════════════════════════════════════════════════
+async function loadQuestions(productId) {
+  const list = document.getElementById('questionList');
+  list.innerHTML = '<div class="loader"><div class="spinner"></div></div>';
+  try {
+    S.questions = await apiGet({ action:'getQuestions', productId: productId||S.currentProduct.id });
+    renderQuestions();
+  } catch(e) {
+    list.innerHTML = '<div class="empty">โหลดคำถามไม่สำเร็จ</div>';
+  }
+}
+
+function renderQuestions() {
+  const list = document.getElementById('questionList');
+  if (!S.questions.length) {
+    list.innerHTML = '<div class="empty">ยังไม่มีคำถามในผลิตภัณฑ์นี้<br><span style="font-size:12px">กด + เพิ่มคำถาม เพื่อเริ่มต้น</span></div>';
+    return;
+  }
+  list.innerHTML = S.questions.map((q,i) => `
+    <div class="q-row">
+      <span class="q-num">${i+1}</span>
+      <span class="q-text">${q.question}</span>
+      <span class="q-ans">${q.answer}</span>
+      ${S.isAdmin ? `
+      <div class="q-actions">
+        <button class="btn-icon" onclick="showQuestionForm('${q.id}')" title="แก้ไข">✏️</button>
+        <button class="btn-icon danger" onclick="deleteQ('${q.id}')" title="ลบ">🗑</button>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════════
+//  QUESTION FORM
+// ════════════════════════════════════════════════════════════
+function showQuestionForm(editId) {
+  const q = editId ? S.questions.find(x=>x.id===editId) : null;
+  document.getElementById('qFormTitle').textContent = q ? 'แก้ไขคำถาม' : 'เพิ่มคำถาม';
+  document.getElementById('qEditId').value        = q ? q.id : '';
+  document.getElementById('qQuestion').value      = q ? q.question : '';
+  document.getElementById('qOptA').value          = q ? q.options.A : '';
+  document.getElementById('qOptB').value          = q ? q.options.B : '';
+  document.getElementById('qOptC').value          = q ? q.options.C : '';
+  document.getElementById('qOptD').value          = q ? q.options.D : '';
+  document.getElementById('qAnswer').value        = q ? q.answer : 'A';
+  document.getElementById('qExplanation').value   = q ? q.explanation : '';
+  document.getElementById('qFormModal').style.display = 'flex';
+}
+function hideQModal()  { document.getElementById('qFormModal').style.display='none'; }
+function closeQModal(e){ if(e.target===document.getElementById('qFormModal')) hideQModal(); }
+
+async function submitQuestion() {
+  const id   = document.getElementById('qEditId').value;
+  const body = {
+    action:      'saveQuestion',
+    id:          id || undefined,
+    productId:   S.currentProduct.id,
+    question:    document.getElementById('qQuestion').value.trim(),
+    options: {
+      A: document.getElementById('qOptA').value.trim(),
+      B: document.getElementById('qOptB').value.trim(),
+      C: document.getElementById('qOptC').value.trim(),
+      D: document.getElementById('qOptD').value.trim(),
+    },
+    answer:      document.getElementById('qAnswer').value,
+    explanation: document.getElementById('qExplanation').value.trim(),
+  };
+  if (!body.question || !body.options.A || !body.options.B || !body.options.C || !body.options.D) {
+    showToast('กรุณากรอกคำถามและตัวเลือกให้ครบ','error'); return;
+  }
+  try {
+    await apiPost(body);
+    hideQModal();
+    showToast('บันทึกคำถามสำเร็จ','success');
+    await loadQuestions();
+  } catch(e) { showToast('เกิดข้อผิดพลาด: '+e.message,'error'); }
+}
+
+async function deleteQ(id) {
+  if (!confirm('ลบคำถามนี้?')) return;
+  try {
+    await apiPost({ action:'deleteQuestion', id });
+    showToast('ลบคำถามแล้ว','info');
+    await loadQuestions();
+  } catch(e) { showToast('ลบไม่สำเร็จ','error'); }
+}
+
+// ════════════════════════════════════════════════════════════
+//  PRODUCT FORM
+// ════════════════════════════════════════════════════════════
+function showProductForm(editId) {
+  const p = editId ? S.products.find(x=>x.id===editId) : null;
+  document.getElementById('productFormTitle').textContent = p ? 'แก้ไขผลิตภัณฑ์' : 'เพิ่มผลิตภัณฑ์';
+  document.getElementById('productEditId').value = p ? p.id : '';
+  document.getElementById('productName').value   = p ? p.name : '';
+  document.getElementById('productDesc').value   = p ? p.description : '';
+  document.getElementById('productFormModal').style.display='flex';
+}
+function hideProductModal()  { document.getElementById('productFormModal').style.display='none'; }
+function closeProductModal(e){ if(e.target===document.getElementById('productFormModal')) hideProductModal(); }
+
+async function submitProduct() {
+  const id   = document.getElementById('productEditId').value;
+  const name = document.getElementById('productName').value.trim();
+  const desc = document.getElementById('productDesc').value.trim();
+  if (!name) { showToast('กรุณาใส่ชื่อผลิตภัณฑ์','error'); return; }
+  try {
+    await apiPost({ action:'saveProduct', id:id||undefined, name, description:desc });
+    hideProductModal();
+    showToast('บันทึกผลิตภัณฑ์สำเร็จ','success');
+    await loadProducts();
+  } catch(e) { showToast('เกิดข้อผิดพลาด','error'); }
+}
+
+async function deleteProductConfirm(id, name) {
+  if (!confirm(`ลบผลิตภัณฑ์ "${name}"?\nคำถามทั้งหมดจะยังคงอยู่ใน Sheet`)) return;
+  try {
+    await apiPost({ action:'deleteProduct', id });
+    showToast('ลบผลิตภัณฑ์แล้ว','info');
+    await loadProducts();
+  } catch(e) { showToast('ลบไม่สำเร็จ','error'); }
+}
+
+// ════════════════════════════════════════════════════════════
+//  PRE-QUIZ
+// ════════════════════════════════════════════════════════════
+function startPreQuiz() {
+  if (!S.questions.length) { showToast('ยังไม่มีคำถามในผลิตภัณฑ์นี้','error'); return; }
+  document.getElementById('prequizProductName').textContent = S.currentProduct.name;
+  document.getElementById('prequizMeta').innerHTML =
+    `จำนวน <strong>${S.questions.length}</strong> ข้อ &nbsp;·&nbsp; เกณฑ์ผ่าน <strong>80%</strong>`;
+  document.getElementById('salesNameInput').value = '';
+  switchTab('prequiz');
+}
+
+// ════════════════════════════════════════════════════════════
+//  QUIZ SESSION
+// ════════════════════════════════════════════════════════════
+function startQuiz() {
+  const name = document.getElementById('salesNameInput').value.trim();
+  if (!name) { showToast('กรุณาใส่ชื่อพนักงานขาย','error'); return; }
+  const shuffled = [...S.questions].sort(()=>Math.random()-.5);
+  S.quiz = { salesName:name, questions:shuffled, idx:0, answers:[], answered:false };
+  document.getElementById('quizProductLabel').textContent = S.currentProduct.name;
+  document.getElementById('quizSalesName').textContent = name;
+  switchTab('quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const { questions, idx } = S.quiz;
+  const q = questions[idx];
+  const pct = Math.round((idx/questions.length)*100);
+
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('quizCounter').textContent  = `${idx+1} / ${questions.length}`;
+  document.getElementById('questionText').textContent  = q.question;
+  document.getElementById('explanationBox').style.display = 'none';
+  document.getElementById('nextBtn').style.display    = 'none';
+  S.quiz.answered = false;
+
+  const list = document.getElementById('optionsList');
+  list.innerHTML = ['A','B','C','D'].map(key => `
+    <button class="option-btn" onclick="answerQ('${key}')">
+      <span class="opt-key">${key}</span>
+      <span>${q.options[key]}</span>
+    </button>
+  `).join('');
+}
+
+function answerQ(chosen) {
+  if (S.quiz.answered) return;
+  S.quiz.answered = true;
+  const q = S.quiz.questions[S.quiz.idx];
+  S.quiz.answers.push({ qid:q.id, question:q.question, chosen, correct:q.answer });
+
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach((btn,i) => {
+    const key = ['A','B','C','D'][i];
+    btn.disabled = true;
+    if (key === q.answer) btn.classList.add('correct');
+    else if (key === chosen && chosen !== q.answer) btn.classList.add('wrong');
+  });
+
+  if (q.explanation) {
+    const box = document.getElementById('explanationBox');
+    box.textContent = '💡 ' + q.explanation;
+    box.style.display = 'block';
+  }
+
+  const isLast = S.quiz.idx >= S.quiz.questions.length - 1;
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.textContent = isLast ? 'ดูผลลัพธ์ →' : 'ข้อถัดไป →';
+  nextBtn.style.display = '';
+}
+
+function nextQuestion() {
+  S.quiz.idx++;
+  if (S.quiz.idx >= S.quiz.questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+function retakeQuiz() {
+  S.quiz.idx = 0;
+  S.quiz.answers = [];
+  S.quiz.questions = [...S.quiz.questions].sort(()=>Math.random()-.5);
+  switchTab('quiz');
+  renderQuestion();
+}
+
+// ════════════════════════════════════════════════════════════
+//  RESULT
+// ════════════════════════════════════════════════════════════
+async function showResult() {
+  const { answers, salesName } = S.quiz;
+  const score  = answers.filter(a=>a.chosen===a.correct).length;
+  const total  = answers.length;
+  const pct    = Math.round((score/total)*100);
+  const passed = pct >= 80;
+
+  document.getElementById('resultScore').textContent   = `${score}/${total}`;
+  document.getElementById('resultVerdict').textContent = passed ? '✅ ผ่าน' : '❌ ไม่ผ่าน';
+
+  const bar = document.getElementById('resultBar');
+  bar.style.background = passed ? '#10b981' : '#ef4444';
+  setTimeout(()=>{ bar.style.width = pct+'%'; }, 100);
+
+  const now = new Date().toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('resultMeta').innerHTML =
+    `${salesName} &nbsp;·&nbsp; ${S.currentProduct.name} &nbsp;·&nbsp; ${now}`;
+
+  document.getElementById('resultDetail').innerHTML = answers.map((a,i)=>`
+    <div class="result-detail-row">
+      <span class="rdr-num">${i+1}</span>
+      <span class="rdr-q">${a.question}
+        <br><small style="color:var(--muted)">คุณตอบ: <strong>${a.chosen}</strong> | เฉลย: <strong>${a.correct}</strong></small>
+      </span>
+      <span class="rdr-badge ${a.chosen===a.correct?'badge-correct':'badge-wrong'}">
+        ${a.chosen===a.correct?'ถูก':'ผิด'}
+      </span>
+    </div>
+  `).join('');
+
+  switchTab('result');
+
+  // save to sheet
+  try {
+    await apiPost({
+      action:      'saveResult',
+      salesName,
+      productId:   S.currentProduct.id,
+      productName: S.currentProduct.name,
+      score, total, passed,
+      detail: answers.map(a=>({q:a.question,chosen:a.chosen,correct:a.correct}))
+    });
+  } catch(e) { console.warn('save result failed',e); }
+}
+
+// ════════════════════════════════════════════════════════════
+//  HISTORY
+// ════════════════════════════════════════════════════════════
+async function loadHistory() {
+  const list     = document.getElementById('historyList');
+  const filterId = document.getElementById('historyFilter').value;
+  list.innerHTML = '<div class="loader"><div class="spinner"></div> กำลังโหลด...</div>';
+
+  try {
+    const data = await apiGet({ action:'getResults', productId:filterId });
+    if (!data.length) {
+      list.innerHTML = '<div class="empty">ยังไม่มีประวัติการสอบ</div>';
+      return;
+    }
+    list.innerHTML = `
+      <div class="history-row history-header">
+        <span>ชื่อพนักงาน</span><span>ผลิตภัณฑ์</span><span>คะแนน</span><span>ผลสอบ</span><span>วันที่</span>
+      </div>
+      ${data.map(r=>`
+      <div class="history-row">
+        <span style="font-weight:500">${r.salesName}</span>
+        <span><span class="chip">${r.productName}</span></span>
+        <span style="font-family:var(--mono)">${r.score}/${r.total} <small style="color:var(--muted)">(${Math.round(r.score/r.total*100)}%)</small></span>
+        <span>${r.passed ? '<span class="tag-pass">ผ่าน</span>' : '<span class="tag-fail">ไม่ผ่าน</span>'}</span>
+        <span style="font-size:12px;color:var(--muted)">${r.timestamp}</span>
+      </div>`).join('')}
+    `;
+  } catch(e) {
+    list.innerHTML = '<div class="empty">โหลดประวัติไม่สำเร็จ</div>';
+  }
+}
+
+function populateHistoryFilter() {
+  const sel = document.getElementById('historyFilter');
+  sel.innerHTML = '<option value="">— ผลิตภัณฑ์ทั้งหมด —</option>' +
+    S.products.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+}
+
+// ════════════════════════════════════════════════════════════
+//  SETTINGS
+// ════════════════════════════════════════════════════════════
+function saveApiUrl() {
+  const url = document.getElementById('apiUrlInput').value.trim();
+  if (!url) { showToast('กรุณาใส่ URL','error'); return; }
+  S.apiUrl = url;
+  localStorage.setItem('el_api_url', url);
+  showToast('บันทึก URL สำเร็จ','success');
+  loadProducts();
+}
+
+async function testApi() {
+  try {
+    const r = await apiGet({ action:'ping' });
+    showToast('✅ เชื่อมต่อสำเร็จ: '+r,'success');
+  } catch(e) {
+    showToast('❌ เชื่อมต่อไม่ได้: '+e.message,'error');
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+//  ADMIN PIN
+// ════════════════════════════════════════════════════════════
+function showPinModal()  {
+  document.getElementById('pinInput').value='';
+  document.getElementById('pinError').style.display='none';
+  document.getElementById('pinModal').style.display='flex';
+  setTimeout(()=>document.getElementById('pinInput').focus(),100);
+}
+function hidePinModal()  { document.getElementById('pinModal').style.display='none'; }
+function closePinModal(e){ if(e.target===document.getElementById('pinModal')) hidePinModal(); }
+
+async function checkPin() {
+  const pin = document.getElementById('pinInput').value.trim();
+  try {
+    const result = await apiPost({ action:'verifyPin', pin });
+    if (result === 'ok') {
+      S.isAdmin = true;
+      hidePinModal();
+      setAdminUI(true);
+      showToast('เข้าสู่ระบบ Admin สำเร็จ','success');
+      await loadProducts();
+    } else {
+      document.getElementById('pinError').style.display='block';
+    }
+  } catch(e) {
+    showToast('ตรวจสอบ PIN ไม่ได้','error');
+  }
+}
+
+function setAdminUI(on) {
+  document.getElementById('addProductBtn').style.display = on ? '' : 'none';
+  document.getElementById('tab-manage').classList.toggle('hidden', !on);
+  const hr = document.getElementById('headerRight');
+  hr.innerHTML = on
+    ? `<span class="badge-admin">ADMIN</span> <button class="btn-admin" onclick="logoutAdmin()">ออก</button>`
+    : `<button class="btn-admin" onclick="showPinModal()">Admin</button>`;
+}
+
+function logoutAdmin() {
+  S.isAdmin = false;
+  setAdminUI(false);
+  showToast('ออกจากระบบ Admin','info');
+  if (document.getElementById('tab-manage').style.display!=='none') switchTab('home');
+  loadProducts();
+}
+
+// ════════════════════════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════════════════════════
+function showToast(msg, type='info') {
+  const toast = document.getElementById('toast');
+  const el = document.createElement('div');
+  el.className = `toast-item toast-${type}`;
+  el.textContent = msg;
+  toast.appendChild(el);
+  setTimeout(()=>el.remove(), 3200);
+}
+
+// ════════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════════
+document.getElementById('apiUrlInput').value = S.apiUrl;
+
+if (S.apiUrl) {
+  loadProducts().then(()=>{ if(S.products.length) populateHistoryFilter(); });
+} else {
+  document.getElementById('productGrid').innerHTML =
+    '<div class="empty">⚙️ กรุณาตั้งค่า API URL ในแท็บ ตั้งค่า ก่อน</div>';
+}
+</script>
+</body>
+</html>
