@@ -3,1399 +3,1115 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Earthline — Sales Training Quiz</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Earthline · Sales Training Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy:    #0f2a4a;
-  --navy2:   #1a3a5c;
-  --navy3:   #1e4976;
-  --sky:     #2d8cf0;
-  --sky-lt:  #e8f3fe;
-  --accent:  #00b4d8;
-  --green:   #10b981;
-  --green-lt:#d1fae5;
-  --red:     #ef4444;
-  --red-lt:  #fee2e2;
-  --amber:   #f59e0b;
-  --amber-lt:#fef3c7;
-  --bg:      #f0f4f8;
-  --surface: #ffffff;
-  --border:  #d1dce8;
-  --text:    #0f2a4a;
-  --muted:   #5a7a9a;
-  --mono:    'IBM Plex Mono', monospace;
+:root{
+  --navy:#0c2340;--navy2:#1a3a5c;--navy3:#234e78;
+  --sky:#3b9eff;--sky2:#1a7fd4;--sky-lt:#e8f3ff;--sky-xs:#f0f7ff;
+  --teal:#00c9b1;--teal-lt:#e0faf6;
+  --green:#11c98a;--green-lt:#dcfbee;
+  --red:#f04e4e;--red-lt:#fff0f0;
+  --amber:#f5a623;--amber-lt:#fff8e6;
+  --bg:#f2f5f9;--bg2:#e8edf4;
+  --surf:#ffffff;--surf2:#f8fafc;
+  --bdr:#dde4ed;--bdr2:#c8d4e3;
+  --txt:#0c2340;--txt2:#3d5a7a;--txt3:#7a96b2;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'Sarabun',sans-serif;
+  --r:10px;--r2:16px;
+  --shadow:0 2px 12px rgba(12,35,64,.08);
+  --shadow2:0 8px 32px rgba(12,35,64,.14);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;scroll-behavior:smooth}
-body{
-  font-family:'IBM Plex Sans Thai',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  line-height:1.6;
-}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);min-height:100vh;line-height:1.6}
+a{color:var(--sky);text-decoration:none}
+button{cursor:pointer;font-family:var(--sans)}
+input,select,textarea{font-family:var(--sans)}
 
-/* ── Header ── */
-.header{
-  background:var(--navy);
-  color:#fff;
-  padding:0 24px;
-  height:56px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:100;
-  box-shadow:0 2px 12px rgba(0,0,0,.25);
+/* ── HEADER ── */
+.hdr{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+  height:60px;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 16px rgba(0,0,0,.25);
 }
-.header-brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:600;
-  font-size:15px;
-  letter-spacing:.02em;
+.hdr-brand{display:flex;align-items:center;gap:10px;color:#fff}
+.hdr-dot{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--teal);
+  box-shadow:0 0 0 3px rgba(0,201,177,.25);
+  animation:pulse 2.5s infinite;
 }
-.header-brand-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--accent);
-  animation:pulse 2s infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
-.header-right{display:flex;align-items:center;gap:8px}
-.btn-admin{
-  font-size:12px;
-  font-family:var(--mono);
-  padding:4px 12px;
-  border:1px solid rgba(255,255,255,.3);
-  border-radius:4px;
-  background:transparent;
-  color:#fff;
-  cursor:pointer;
+@keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(0,201,177,.25)}50%{box-shadow:0 0 0 7px rgba(0,201,177,.08)}}
+.hdr-title{font-size:15px;font-weight:600;letter-spacing:.02em}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.5);font-family:var(--mono);margin-left:2px}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.btn-admin-hdr{
+  font-size:12px;font-family:var(--mono);
+  padding:5px 14px;border-radius:6px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.08);color:#fff;
   transition:background .15s;
 }
-.btn-admin:hover{background:rgba(255,255,255,.1)}
+.btn-admin-hdr:hover{background:rgba(255,255,255,.18)}
 .badge-admin{
-  font-size:11px;
-  font-family:var(--mono);
-  padding:2px 8px;
-  background:var(--accent);
-  color:var(--navy);
-  border-radius:3px;
-  font-weight:600;
+  font-size:11px;font-family:var(--mono);font-weight:600;
+  padding:3px 10px;border-radius:5px;
+  background:var(--teal);color:var(--navy);
 }
 
-/* ── Nav tabs ── */
+/* ── NAV ── */
 .nav{
   background:var(--navy2);
-  display:flex;
-  gap:2px;
-  padding:0 20px;
-  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;gap:0;padding:0 24px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  overflow-x:auto;
 }
+.nav::-webkit-scrollbar{display:none}
 .nav-tab{
-  font-size:13px;
-  padding:10px 16px;
-  color:rgba(255,255,255,.55);
-  cursor:pointer;
+  font-size:13px;font-weight:500;
+  padding:12px 18px;
+  color:rgba(255,255,255,.45);
   border-bottom:2px solid transparent;
   transition:color .15s,border-color .15s;
-  user-select:none;
-  white-space:nowrap;
+  white-space:nowrap;user-select:none;
+  display:flex;align-items:center;gap:6px;
 }
 .nav-tab:hover{color:rgba(255,255,255,.8)}
-.nav-tab.active{color:#fff;border-bottom-color:var(--accent)}
+.nav-tab.active{color:#fff;border-bottom-color:var(--teal)}
 .nav-tab.hidden{display:none}
 
-/* ── Container ── */
-.container{max-width:900px;margin:0 auto;padding:28px 20px}
+/* ── LAYOUT ── */
+.page{max-width:960px;margin:0 auto;padding:32px 20px}
 
-/* ── Card ── */
+/* ── CARDS ── */
 .card{
-  background:var(--surface);
-  border-radius:10px;
-  border:1px solid var(--border);
-  padding:24px;
-  margin-bottom:16px;
+  background:var(--surf);border-radius:var(--r2);
+  border:1px solid var(--bdr);
+  box-shadow:var(--shadow);
+  padding:24px;margin-bottom:16px;
 }
-.card-sm{padding:16px 20px}
+.card-flat{background:var(--surf2);border-radius:var(--r);border:1px solid var(--bdr);padding:20px}
 
-/* ── Product grid ── */
-.product-grid{
+/* ── SECTION HEADER ── */
+.sec-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.sec-title{font-size:20px;font-weight:700;color:var(--navy)}
+.sec-sub{font-size:13px;color:var(--txt3);margin-top:2px}
+
+/* ── PRODUCT GRID ── */
+.prod-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-  gap:14px;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
 }
-.product-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:18px 20px;
-  cursor:pointer;
-  transition:border-color .15s,transform .12s,box-shadow .15s;
-  position:relative;
-  overflow:hidden;
+.prod-card{
+  background:var(--surf);border-radius:var(--r2);
+  border:1.5px solid var(--bdr);
+  padding:20px 22px 18px;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+  display:flex;flex-direction:column;gap:6px;
 }
-.product-card::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;
-  height:3px;
-  background:linear-gradient(90deg,var(--navy2),var(--accent));
-  opacity:0;
-  transition:opacity .15s;
+.prod-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(59,158,255,.05) 0%,transparent 60%);
+  opacity:0;transition:opacity .18s;
 }
-.product-card:hover{
+.prod-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(12,35,64,.15);
   border-color:var(--sky);
-  transform:translateY(-2px);
-  box-shadow:0 6px 20px rgba(15,42,74,.12);
 }
-.product-card:hover::before{opacity:1}
-.product-name{font-weight:600;font-size:14px;margin-bottom:4px}
-.product-desc{font-size:12px;color:var(--muted)}
-.product-count{
-  margin-top:10px;
-  font-size:11px;
-  font-family:var(--mono);
-  color:var(--sky);
-  font-weight:500;
+.prod-card:hover::after{opacity:1}
+.prod-accent{
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--sky),var(--teal));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .2s;
 }
-.product-actions{
-  position:absolute;
-  top:12px;right:12px;
-  display:flex;gap:4px;
-  opacity:0;
-  transition:opacity .15s;
-}
-.product-card:hover .product-actions{opacity:1}
-.btn-icon{
-  width:26px;height:26px;
-  border-radius:4px;
-  border:1px solid var(--border);
-  background:#fff;
-  cursor:pointer;
+.prod-card:hover .prod-accent{transform:scaleX(1)}
+.prod-icon{
+  width:40px;height:40px;border-radius:10px;
+  background:var(--sky-xs);
   display:flex;align-items:center;justify-content:center;
-  font-size:12px;
-  color:var(--muted);
-  transition:background .12s,color .12s;
+  font-size:20px;margin-bottom:4px;
 }
-.btn-icon:hover{background:var(--sky-lt);color:var(--sky)}
-.btn-icon.danger:hover{background:var(--red-lt);color:var(--red)}
-
-/* ── Section header ── */
-.section-hd{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:20px;
-  gap:12px;
+.prod-name{font-size:14px;font-weight:700;color:var(--navy)}
+.prod-desc{font-size:12px;color:var(--txt3)}
+.prod-count{
+  margin-top:6px;font-size:11px;font-family:var(--mono);font-weight:500;
+  color:var(--sky2);display:flex;align-items:center;gap:4px;
 }
-.section-title{font-size:18px;font-weight:600;color:var(--navy)}
-.section-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.prod-count::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--sky);display:inline-block}
+.prod-actions{
+  position:absolute;top:14px;right:14px;
+  display:flex;gap:4px;opacity:0;transition:opacity .15s;
+}
+.prod-card:hover .prod-actions{opacity:1}
+.btn-ic{
+  width:28px;height:28px;border-radius:6px;
+  border:1px solid var(--bdr);background:var(--surf);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:var(--txt3);
+  transition:background .12s,color .12s,border-color .12s;
+}
+.btn-ic:hover{background:var(--sky-lt);color:var(--sky2);border-color:var(--sky)}
+.btn-ic.danger:hover{background:var(--red-lt);color:var(--red);border-color:var(--red)}
 
-/* ── Buttons ── */
+/* ── BUTTONS ── */
 .btn{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:8px 18px;
-  border-radius:6px;
-  font-size:13px;
-  font-weight:500;
-  cursor:pointer;
-  border:none;
-  transition:background .12s,transform .1s;
-  font-family:'IBM Plex Sans Thai',sans-serif;
-  white-space:nowrap;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 20px;border-radius:8px;
+  font-size:13px;font-weight:600;
+  border:none;transition:all .15s;white-space:nowrap;
 }
 .btn:active{transform:scale(.97)}
 .btn-primary{background:var(--navy2);color:#fff}
 .btn-primary:hover{background:var(--navy3)}
-.btn-sky{background:var(--sky);color:#fff}
-.btn-sky:hover{background:#1a7de0}
-.btn-green{background:var(--green);color:#fff}
-.btn-green:hover{background:#0da271}
-.btn-ghost{background:transparent;color:var(--navy2);border:1px solid var(--border)}
-.btn-ghost:hover{background:var(--sky-lt);border-color:var(--sky)}
+.btn-sky{background:linear-gradient(135deg,var(--sky),var(--sky2));color:#fff;box-shadow:0 4px 14px rgba(59,158,255,.35)}
+.btn-sky:hover{box-shadow:0 6px 20px rgba(59,158,255,.5);transform:translateY(-1px)}
+.btn-teal{background:linear-gradient(135deg,var(--teal),#00a896);color:#fff;box-shadow:0 4px 14px rgba(0,201,177,.3)}
+.btn-teal:hover{box-shadow:0 6px 20px rgba(0,201,177,.45);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--txt2);border:1.5px solid var(--bdr)}
+.btn-ghost:hover{background:var(--sky-lt);border-color:var(--sky);color:var(--sky2)}
 .btn-danger{background:var(--red);color:#fff}
-.btn-danger:hover{background:#dc2626}
-.btn-sm{padding:5px 12px;font-size:12px}
+.btn-sm{padding:6px 14px;font-size:12px;border-radius:6px}
 
-/* ── Question list ── */
+/* ── QUESTION LIST ── */
+.q-list{display:flex;flex-direction:column;gap:8px}
 .q-row{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  padding:14px 16px;
-  border:1px solid var(--border);
-  border-radius:8px;
-  margin-bottom:8px;
-  background:var(--surface);
-  transition:border-color .12s;
+  display:flex;align-items:flex-start;gap:12px;
+  padding:14px 18px;
+  background:var(--surf);border:1.5px solid var(--bdr);border-radius:var(--r);
+  transition:border-color .12s,box-shadow .12s;
 }
-.q-row:hover{border-color:var(--sky)}
+.q-row:hover{border-color:var(--sky);box-shadow:0 2px 12px rgba(59,158,255,.1)}
 .q-num{
-  font-family:var(--mono);
-  font-size:11px;
-  color:var(--muted);
-  padding:2px 6px;
-  background:var(--bg);
-  border-radius:4px;
-  flex-shrink:0;
-  margin-top:2px;
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  padding:3px 8px;background:var(--sky-xs);color:var(--sky2);
+  border-radius:5px;flex-shrink:0;margin-top:1px;
 }
-.q-text{font-size:13px;flex:1;line-height:1.5}
+.q-text{font-size:13px;flex:1;line-height:1.55;color:var(--txt)}
 .q-ans{
-  font-family:var(--mono);
-  font-size:12px;
-  font-weight:600;
-  color:var(--green);
-  flex-shrink:0;
-  margin-top:2px;
+  font-family:var(--mono);font-size:12px;font-weight:700;
+  color:var(--green);flex-shrink:0;margin-top:2px;
+  background:var(--green-lt);padding:2px 8px;border-radius:5px;
 }
 .q-actions{display:flex;gap:6px;flex-shrink:0;margin-top:1px}
 
-/* ── Form ── */
-.form-group{margin-bottom:16px}
+/* ── FORM ── */
+.form-group{margin-bottom:18px}
 .form-label{
-  display:block;
-  font-size:12px;
-  font-weight:600;
-  color:var(--muted);
-  margin-bottom:6px;
-  text-transform:uppercase;
-  letter-spacing:.05em;
+  display:block;font-size:11px;font-weight:700;
+  color:var(--txt3);margin-bottom:7px;
+  text-transform:uppercase;letter-spacing:.07em;
 }
-.form-input,
-.form-select,
-.form-textarea{
-  width:100%;
-  padding:9px 12px;
-  border:1px solid var(--border);
-  border-radius:6px;
-  font-size:14px;
-  font-family:'IBM Plex Sans Thai',sans-serif;
-  color:var(--text);
-  background:#fff;
-  transition:border-color .12s;
-  outline:none;
+.form-input,.form-select,.form-textarea{
+  width:100%;padding:10px 13px;
+  border:1.5px solid var(--bdr);border-radius:8px;
+  font-size:14px;color:var(--txt);background:#fff;
+  transition:border-color .12s,box-shadow .12s;outline:none;
 }
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus{border-color:var(--sky)}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  border-color:var(--sky);
+  box-shadow:0 0 0 3px rgba(59,158,255,.12);
+}
 .form-textarea{resize:vertical;min-height:72px}
-.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.opt-label{
-  font-size:11px;
-  font-family:var(--mono);
-  font-weight:600;
-  color:var(--navy2);
-  margin-bottom:4px;
-}
-
-/* ── Quiz ── */
-.quiz-header{
-  background:var(--navy);
-  color:#fff;
-  border-radius:10px;
-  padding:20px 24px;
-  margin-bottom:20px;
-}
-.quiz-product{font-size:12px;color:rgba(255,255,255,.55);margin-bottom:4px;font-family:var(--mono)}
-.quiz-name{font-size:18px;font-weight:600}
-.progress-bar-track{
-  height:4px;
-  background:rgba(255,255,255,.2);
-  border-radius:2px;
-  margin-top:16px;
-  overflow:hidden;
-}
-.progress-bar-fill{
-  height:100%;
-  background:var(--accent);
-  border-radius:2px;
-  transition:width .3s ease;
-}
-.quiz-counter{
-  font-size:12px;
-  color:rgba(255,255,255,.55);
-  margin-top:8px;
-  font-family:var(--mono);
-}
-
-.question-text{
-  font-size:16px;
-  font-weight:500;
-  line-height:1.65;
-  margin-bottom:20px;
-}
-.options-list{display:flex;flex-direction:column;gap:10px}
-.option-btn{
-  width:100%;
-  text-align:left;
-  padding:13px 16px;
-  border:1.5px solid var(--border);
-  border-radius:8px;
-  background:#fff;
-  font-size:14px;
-  font-family:'IBM Plex Sans Thai',sans-serif;
-  cursor:pointer;
-  transition:border-color .12s,background .12s;
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
-  line-height:1.5;
-}
-.option-btn:not(:disabled):hover{border-color:var(--sky);background:var(--sky-lt)}
-.option-btn.correct{border-color:var(--green);background:var(--green-lt)}
-.option-btn.wrong{border-color:var(--red);background:var(--red-lt)}
-.option-btn:disabled{cursor:default}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .opt-key{
-  font-family:var(--mono);
-  font-weight:600;
-  font-size:13px;
-  color:var(--muted);
-  flex-shrink:0;
-  width:20px;
-}
-.explanation-box{
-  margin-top:16px;
-  padding:14px 16px;
-  background:var(--sky-lt);
-  border-left:3px solid var(--sky);
-  border-radius:0 6px 6px 0;
-  font-size:13px;
-  color:var(--navy2);
-  line-height:1.6;
-}
-.next-btn-wrap{margin-top:20px;text-align:right}
-
-/* ── Result ── */
-.result-hero{
-  text-align:center;
-  padding:32px 24px;
-  background:var(--navy);
-  color:#fff;
-  border-radius:10px;
-  margin-bottom:20px;
-}
-.result-score-big{
-  font-size:64px;
-  font-weight:300;
-  font-family:var(--mono);
-  line-height:1;
-  margin-bottom:8px;
-}
-.result-pct{font-size:24px;opacity:.6}
-.result-verdict{
-  font-size:20px;
-  font-weight:600;
-  margin-top:12px;
-}
-.score-bar-track{
-  height:8px;
-  background:rgba(255,255,255,.2);
-  border-radius:4px;
-  margin:16px auto;
-  max-width:300px;
-  overflow:hidden;
-}
-.score-bar-fill{
-  height:100%;
-  border-radius:4px;
-  transition:width 1s ease;
-}
-.result-meta{
-  display:flex;
-  justify-content:center;
-  gap:24px;
-  font-size:13px;
-  opacity:.7;
-  margin-top:8px;
-}
-.result-detail-row{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  padding:12px 0;
-  border-bottom:1px solid var(--border);
-  font-size:13px;
-}
-.result-detail-row:last-child{border-bottom:none}
-.rdr-num{
-  font-family:var(--mono);
-  font-size:11px;
-  color:var(--muted);
-  width:28px;
-  flex-shrink:0;
-  margin-top:2px;
-}
-.rdr-q{flex:1;line-height:1.5}
-.rdr-badge{
-  flex-shrink:0;
-  font-size:11px;
-  font-family:var(--mono);
-  font-weight:600;
-  padding:2px 8px;
-  border-radius:4px;
-  margin-top:2px;
-}
-.badge-correct{background:var(--green-lt);color:var(--green)}
-.badge-wrong{background:var(--red-lt);color:var(--red)}
-
-/* ── History ── */
-.history-row{
-  display:grid;
-  grid-template-columns:1fr 100px 80px 80px 80px;
-  align-items:center;
-  gap:12px;
-  padding:12px 16px;
-  border:1px solid var(--border);
-  border-radius:8px;
-  margin-bottom:8px;
-  background:var(--surface);
-  font-size:13px;
-}
-.history-header{
-  font-size:11px;
-  font-family:var(--mono);
-  color:var(--muted);
-  font-weight:600;
-  border-color:transparent;
-  background:transparent;
-  padding-left:16px;
-  margin-bottom:0;
-}
-.tag-pass{
-  font-size:11px;
-  font-family:var(--mono);
-  font-weight:600;
-  padding:2px 8px;
-  border-radius:4px;
-  background:var(--green-lt);
-  color:var(--green);
-}
-.tag-fail{
-  font-size:11px;
-  font-family:var(--mono);
-  font-weight:600;
-  padding:2px 8px;
-  border-radius:4px;
-  background:var(--red-lt);
-  color:var(--red);
+  font-size:11px;font-family:var(--mono);font-weight:700;
+  color:var(--navy2);margin-bottom:5px;
 }
 
-/* ── Modal ── */
-.modal-overlay{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,.5);
+/* ── QUIZ ── */
+.quiz-hdr{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 100%);
+  color:#fff;border-radius:var(--r2);padding:24px 28px;margin-bottom:20px;
+  box-shadow:var(--shadow2);
+}
+.quiz-prod-lbl{font-size:11px;color:rgba(255,255,255,.5);font-family:var(--mono);margin-bottom:4px}
+.quiz-sales{font-size:19px;font-weight:700}
+.prog-track{height:5px;background:rgba(255,255,255,.15);border-radius:3px;margin-top:18px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--sky));border-radius:3px;transition:width .35s ease}
+.quiz-ctr{font-size:12px;color:rgba(255,255,255,.5);margin-top:8px;font-family:var(--mono)}
+
+.q-text-big{font-size:16px;font-weight:600;line-height:1.65;margin-bottom:22px;color:var(--navy)}
+.opts-list{display:flex;flex-direction:column;gap:10px}
+.opt-btn{
+  width:100%;text-align:left;
+  padding:14px 18px;
+  border:2px solid var(--bdr);border-radius:var(--r);
+  background:#fff;
+  font-size:14px;display:flex;align-items:flex-start;gap:12px;
+  line-height:1.5;transition:all .15s;
+}
+.opt-btn:not(:disabled):hover{border-color:var(--sky);background:var(--sky-xs);box-shadow:0 2px 12px rgba(59,158,255,.12)}
+.opt-btn.correct{border-color:var(--green);background:var(--green-lt)}
+.opt-btn.wrong{border-color:var(--red);background:var(--red-lt)}
+.opt-btn:disabled{cursor:default}
+.opt-k{
+  font-family:var(--mono);font-weight:700;font-size:13px;
+  color:#fff;background:var(--navy2);
+  width:26px;height:26px;border-radius:6px;
   display:flex;align-items:center;justify-content:center;
-  z-index:200;
-  padding:20px;
+  flex-shrink:0;margin-top:1px;
+}
+.opt-btn.correct .opt-k{background:var(--green)}
+.opt-btn.wrong .opt-k{background:var(--red)}
+.expl-box{
+  margin-top:18px;padding:14px 18px;
+  background:linear-gradient(135deg,var(--sky-xs),var(--teal-lt));
+  border-left:3px solid var(--sky);border-radius:0 8px 8px 0;
+  font-size:13px;color:var(--navy2);line-height:1.65;
+}
+.next-wrap{margin-top:22px;display:flex;justify-content:flex-end}
+
+/* ── PRE-QUIZ ── */
+.prequiz-wrap{max-width:500px;margin:48px auto}
+.prequiz-hero{
+  text-align:center;margin-bottom:32px;
+  padding:32px;
+  background:linear-gradient(135deg,var(--navy),var(--navy3));
+  border-radius:var(--r2);color:#fff;
+  box-shadow:var(--shadow2);
+}
+.prequiz-emoji{font-size:48px;margin-bottom:12px}
+.prequiz-prod{font-size:22px;font-weight:700}
+.prequiz-sub{font-size:13px;color:rgba(255,255,255,.55);margin-top:4px}
+.prequiz-stats{
+  display:flex;justify-content:center;gap:24px;margin-top:20px;
+}
+.prequiz-stat{text-align:center}
+.prequiz-stat-n{font-size:28px;font-weight:700;font-family:var(--mono)}
+.prequiz-stat-l{font-size:11px;color:rgba(255,255,255,.5)}
+
+/* ── RESULT ── */
+.result-hero{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 100%);
+  color:#fff;border-radius:var(--r2);padding:36px 28px;
+  text-align:center;margin-bottom:20px;box-shadow:var(--shadow2);
+}
+.result-score{font-size:72px;font-weight:300;font-family:var(--mono);line-height:1}
+.result-pct{font-size:22px;opacity:.55;font-family:var(--mono)}
+.result-verdict{font-size:22px;font-weight:700;margin-top:14px}
+.score-track{height:8px;background:rgba(255,255,255,.15);border-radius:4px;margin:20px auto;max-width:280px;overflow:hidden}
+.score-fill{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+.result-meta{font-size:13px;color:rgba(255,255,255,.5);margin-top:10px}
+.rdr{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:13px 0;border-bottom:1px solid var(--bdr);
+  font-size:13px;
+}
+.rdr:last-child{border-bottom:none}
+.rdr-num{font-family:var(--mono);font-size:11px;color:var(--txt3);width:28px;flex-shrink:0;margin-top:2px}
+.rdr-q{flex:1;line-height:1.55}
+.rdr-q small{color:var(--txt3)}
+.badge{font-size:11px;font-family:var(--mono);font-weight:700;padding:3px 9px;border-radius:5px;flex-shrink:0;margin-top:2px}
+.badge-ok{background:var(--green-lt);color:var(--green)}
+.badge-ng{background:var(--red-lt);color:var(--red)}
+
+/* ── HISTORY ── */
+.hist-table{width:100%;border-collapse:collapse}
+.hist-table th{
+  font-size:11px;font-family:var(--mono);font-weight:600;
+  color:var(--txt3);padding:10px 14px;
+  text-align:left;border-bottom:2px solid var(--bdr);
+}
+.hist-table td{
+  padding:12px 14px;font-size:13px;
+  border-bottom:1px solid var(--bdr);
+  vertical-align:middle;
+}
+.hist-table tr:last-child td{border-bottom:none}
+.hist-table tr:hover td{background:var(--sky-xs)}
+.tag-pass{font-size:11px;font-family:var(--mono);font-weight:700;padding:3px 9px;border-radius:5px;background:var(--green-lt);color:var(--green)}
+.tag-fail{font-size:11px;font-family:var(--mono);font-weight:700;padding:3px 9px;border-radius:5px;background:var(--red-lt);color:var(--red)}
+.chip{font-size:11px;font-family:var(--mono);padding:2px 8px;border-radius:5px;background:var(--sky-lt);color:var(--sky2);font-weight:600}
+
+/* ── SETTINGS ── */
+.setup-step{
+  display:flex;gap:16px;padding:14px 0;
+  border-bottom:1px solid var(--bdr);
+}
+.setup-step:last-child{border-bottom:none}
+.step-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--navy2);color:#fff;
+  font-family:var(--mono);font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;
+}
+.step-content{font-size:13px;line-height:1.65;color:var(--txt2)}
+.step-content strong{color:var(--navy);font-weight:700}
+.step-content code{
+  font-family:var(--mono);font-size:12px;
+  background:var(--bg2);padding:2px 6px;border-radius:4px;color:var(--navy2);
+}
+
+/* ── MODAL ── */
+.overlay{
+  position:fixed;inset:0;background:rgba(12,35,64,.55);
+  display:flex;align-items:center;justify-content:center;
+  z-index:200;padding:20px;
+  backdrop-filter:blur(4px);
 }
 .modal{
-  background:#fff;
-  border-radius:12px;
-  width:100%;
-  max-width:560px;
-  max-height:90vh;
-  overflow-y:auto;
-  padding:28px;
-  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  background:#fff;border-radius:var(--r2);width:100%;max-width:580px;
+  max-height:92vh;overflow-y:auto;padding:28px;
+  box-shadow:0 24px 64px rgba(0,0,0,.3);
+  animation:popIn .2s ease;
 }
-.modal-title{
-  font-size:16px;
-  font-weight:600;
-  margin-bottom:20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.modal-close{
-  background:none;border:none;cursor:pointer;
-  font-size:20px;color:var(--muted);
-  line-height:1;
-}
-.modal-close:hover{color:var(--text)}
-.modal-footer{
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-  margin-top:24px;
-}
+@keyframes popIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.modal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.modal-title{font-size:16px;font-weight:700;color:var(--navy)}
+.modal-close{background:none;border:none;font-size:22px;color:var(--txt3);line-height:1;transition:color .12s}
+.modal-close:hover{color:var(--txt)}
+.modal-ft{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;padding-top:18px;border-top:1px solid var(--bdr)}
 
-/* ── Pre-quiz ── */
-.prequiz-wrap{
-  max-width:480px;
-  margin:40px auto;
-}
-.prequiz-logo{
-  text-align:center;
-  margin-bottom:32px;
-}
-.prequiz-logo-text{
-  font-size:22px;
-  font-weight:600;
-  color:var(--navy);
-}
-.prequiz-logo-sub{font-size:13px;color:var(--muted);margin-top:4px}
-
-/* ── PIN ── */
-.pin-modal .form-input{
-  font-family:var(--mono);
-  font-size:22px;
-  letter-spacing:.2em;
-  text-align:center;
-}
-
-/* ── Loader ── */
-.loader{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:180px;
-  color:var(--muted);
-  gap:10px;
-  font-size:14px;
-}
-.spinner{
-  width:20px;height:20px;
-  border:2px solid var(--border);
-  border-top-color:var(--sky);
-  border-radius:50%;
-  animation:spin .7s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── Toast ── */
-#toast{
-  position:fixed;
-  bottom:24px;right:24px;
-  z-index:300;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  pointer-events:none;
-}
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;right:24px;z-index:300;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast-item{
-  padding:10px 18px;
-  border-radius:6px;
-  font-size:13px;
-  color:#fff;
-  pointer-events:auto;
+  padding:11px 18px;border-radius:8px;font-size:13px;color:#fff;
+  box-shadow:0 6px 20px rgba(0,0,0,.2);
   animation:slideUp .25s ease;
-  box-shadow:0 4px 12px rgba(0,0,0,.2);
+  display:flex;align-items:center;gap:8px;
 }
-@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.toast-success{background:var(--green)}
-.toast-error{background:var(--red)}
-.toast-info{background:var(--navy2)}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.toast-success{background:linear-gradient(135deg,#0eb87f,#10c987)}
+.toast-error{background:linear-gradient(135deg,#e84040,#f06060)}
+.toast-info{background:linear-gradient(135deg,var(--navy2),var(--navy3))}
 
-/* ── Misc ── */
-.empty{
-  text-align:center;
-  padding:48px 24px;
-  color:var(--muted);
-  font-size:14px;
-}
-.divider{height:1px;background:var(--border);margin:20px 0}
-.chip{
-  display:inline-block;
-  font-size:11px;
-  font-family:var(--mono);
-  padding:2px 8px;
-  border-radius:4px;
-  background:var(--sky-lt);
-  color:var(--sky);
-  font-weight:600;
-}
-.flex{display:flex;align-items:center;gap:8px}
-.ml-auto{margin-left:auto}
-.api-note{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:6px;
-}
+/* ── MISC ── */
+.empty{text-align:center;padding:56px 24px;color:var(--txt3);font-size:14px;line-height:2}
+.loader{display:flex;align-items:center;justify-content:center;height:200px;color:var(--txt3);gap:10px;font-size:14px}
+.spin{width:22px;height:22px;border:2.5px solid var(--bdr2);border-top-color:var(--sky);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flex{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ml-a{margin-left:auto}
+.divider{height:1px;background:var(--bdr);margin:20px 0}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--surf2);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;text-align:center}
+.stat-n{font-size:28px;font-weight:700;font-family:var(--mono);color:var(--navy)}
+.stat-l{font-size:11px;color:var(--txt3);margin-top:2px}
 
-/* ── Responsive ── */
 @media(max-width:600px){
-  .product-grid{grid-template-columns:1fr}
-  .options-grid{grid-template-columns:1fr}
-  .history-row{grid-template-columns:1fr 80px 70px}
-  .history-row > *:nth-child(n+4){display:none}
+  .prod-grid{grid-template-columns:1fr}
+  .opts-grid{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .hist-table th:nth-child(n+4),.hist-table td:nth-child(n+4){display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="header">
-  <div class="header-brand">
-    <div class="header-brand-dot"></div>
-    EARTHLINE · Sales Training Quiz
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-brand">
+    <div class="hdr-dot"></div>
+    <div>
+      <div class="hdr-title">EARTHLINE · Sales Training Quiz</div>
+    </div>
   </div>
-  <div class="header-right" id="headerRight">
-    <button class="btn-admin" onclick="showPinModal()">Admin</button>
+  <div class="hdr-right" id="hdrRight">
+    <button class="btn-admin-hdr" onclick="showPin()">🔐 Admin</button>
   </div>
 </div>
 
-<!-- Nav -->
-<div class="nav" id="mainNav">
-  <div class="nav-tab active" data-tab="home" onclick="switchTab('home')">📋 ผลิตภัณฑ์</div>
-  <div class="nav-tab hidden" id="tab-manage" data-tab="manage" onclick="switchTab('manage')">📚 จัดการคำถาม</div>
-  <div class="nav-tab" data-tab="history" onclick="switchTab('history')">🗂 ประวัติผลสอบ</div>
-  <div class="nav-tab" data-tab="settings" onclick="switchTab('settings')">⚙️ ตั้งค่า</div>
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-tab active" data-tab="home" onclick="tab('home')">📋 ผลิตภัณฑ์</div>
+  <div class="nav-tab hidden" id="tabManage" data-tab="manage" onclick="tab('manage')">📚 จัดการคำถาม</div>
+  <div class="nav-tab" data-tab="history" onclick="tab('history')">🗂 ประวัติผลสอบ</div>
+  <div class="nav-tab" data-tab="settings" onclick="tab('settings')">⚙️ ตั้งค่า</div>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
-<!-- ════════════════════════════════════
-     TAB: HOME
-════════════════════════════════════ -->
-<div id="tab-home" class="container">
-  <div class="section-hd">
+<!-- ══ HOME ══ -->
+<div id="pg-home" class="page">
+  <div class="sec-hd">
     <div>
-      <div class="section-title">เลือกผลิตภัณฑ์</div>
-      <div class="section-sub">เลือกผลิตภัณฑ์ที่ต้องการทดสอบความรู้</div>
-    </div>
-    <button class="btn btn-primary btn-sm" id="addProductBtn" style="display:none" onclick="showProductForm()">+ เพิ่มผลิตภัณฑ์</button>
-  </div>
-  <div id="productGrid" class="product-grid">
-    <div class="loader"><div class="spinner"></div> กำลังโหลด...</div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════
-     TAB: MANAGE QUESTIONS
-════════════════════════════════════ -->
-<div id="tab-manage" class="container" style="display:none">
-  <div class="section-hd">
-    <div>
-      <div style="font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:4px" id="manageProductLabel">–</div>
-      <div class="section-title" id="manageTitle">จัดการคำถาม</div>
+      <div class="sec-title">เลือกผลิตภัณฑ์</div>
+      <div class="sec-sub">กดการ์ดเพื่อดูคำถามและเริ่มทดสอบ</div>
     </div>
     <div class="flex">
-      <button class="btn btn-ghost btn-sm" onclick="switchTab('home')">← กลับ</button>
-      <button class="btn btn-sky btn-sm" onclick="startPreQuiz()">▶ ทดสอบ</button>
-      <button class="btn btn-primary btn-sm" onclick="showQuestionForm()">+ เพิ่มคำถาม</button>
+      <button class="btn btn-sky btn-sm" id="btnAddProd" style="display:none" onclick="showProdForm()">+ ผลิตภัณฑ์</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadHome()">↻</button>
     </div>
   </div>
-  <div id="questionList"></div>
+  <div id="prodGrid" class="prod-grid">
+    <div class="loader"><div class="spin"></div> กำลังโหลด...</div>
+  </div>
 </div>
 
-<!-- ════════════════════════════════════
-     TAB: PRE-QUIZ
-════════════════════════════════════ -->
-<div id="tab-prequiz" class="container" style="display:none">
+<!-- ══ MANAGE ══ -->
+<div id="pg-manage" class="page" style="display:none">
+  <div class="sec-hd">
+    <div>
+      <div style="font-size:11px;color:var(--txt3);font-family:var(--mono);margin-bottom:4px" id="mgLbl">–</div>
+      <div class="sec-title" id="mgTitle">จัดการคำถาม</div>
+    </div>
+    <div class="flex">
+      <button class="btn btn-ghost btn-sm" onclick="tab('home')">← กลับ</button>
+      <button class="btn btn-teal btn-sm" onclick="startPreQuiz()">▶ ทดสอบ</button>
+      <button class="btn btn-sky btn-sm" onclick="showQForm()">+ คำถาม</button>
+    </div>
+  </div>
+  <div id="qList" class="q-list"></div>
+</div>
+
+<!-- ══ PRE-QUIZ ══ -->
+<div id="pg-prequiz" class="page" style="display:none">
   <div class="prequiz-wrap">
-    <div class="prequiz-logo">
-      <div class="prequiz-logo-text">📝 แบบทดสอบ</div>
-      <div class="prequiz-logo-sub" id="prequizProductName">–</div>
+    <div class="prequiz-hero">
+      <div class="prequiz-emoji">📝</div>
+      <div class="prequiz-prod" id="pqProd">–</div>
+      <div class="prequiz-sub" id="pqDesc">–</div>
+      <div class="prequiz-stats">
+        <div class="prequiz-stat">
+          <div class="prequiz-stat-n" id="pqCount">0</div>
+          <div class="prequiz-stat-l">คำถาม</div>
+        </div>
+        <div class="prequiz-stat">
+          <div class="prequiz-stat-n">80%</div>
+          <div class="prequiz-stat-l">เกณฑ์ผ่าน</div>
+        </div>
+      </div>
     </div>
     <div class="card">
       <div class="form-group">
         <label class="form-label">ชื่อพนักงานขาย</label>
-        <input class="form-input" id="salesNameInput" placeholder="กรอกชื่อ-นามสกุล" autocomplete="off">
+        <input class="form-input" id="salesName" placeholder="กรอกชื่อ-นามสกุล" autocomplete="off"
+          onkeydown="if(event.key==='Enter')startQuiz()">
       </div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:20px" id="prequizMeta">–</div>
-      <div class="flex">
-        <button class="btn btn-ghost" onclick="switchTab('manage')">← กลับ</button>
-        <button class="btn btn-sky ml-auto" onclick="startQuiz()">เริ่มทดสอบ →</button>
+      <div class="flex" style="justify-content:space-between">
+        <button class="btn btn-ghost" onclick="tab('manage')">← กลับ</button>
+        <button class="btn btn-sky" onclick="startQuiz()">เริ่มทดสอบ →</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════
-     TAB: QUIZ
-════════════════════════════════════ -->
-<div id="tab-quiz" class="container" style="display:none">
-  <div class="quiz-header">
-    <div class="quiz-product" id="quizProductLabel">–</div>
-    <div class="quiz-name" id="quizSalesName">–</div>
-    <div class="progress-bar-track">
-      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
-    </div>
-    <div class="quiz-counter" id="quizCounter">0 / 0</div>
+<!-- ══ QUIZ ══ -->
+<div id="pg-quiz" class="page" style="display:none">
+  <div class="quiz-hdr">
+    <div class="quiz-prod-lbl" id="qzProd">–</div>
+    <div class="quiz-sales" id="qzSales">–</div>
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="quiz-ctr" id="qzCtr">0 / 0</div>
   </div>
   <div class="card">
-    <div class="question-text" id="questionText">–</div>
-    <div class="options-list" id="optionsList"></div>
-    <div class="explanation-box" id="explanationBox" style="display:none"></div>
-    <div class="next-btn-wrap">
-      <button class="btn btn-sky" id="nextBtn" style="display:none" onclick="nextQuestion()">ข้อถัดไป →</button>
+    <div class="q-text-big" id="qzText">–</div>
+    <div class="opts-list" id="qzOpts"></div>
+    <div class="expl-box" id="qzExpl" style="display:none"></div>
+    <div class="next-wrap">
+      <button class="btn btn-sky" id="qzNext" style="display:none" onclick="nextQ()">ข้อถัดไป →</button>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════
-     TAB: RESULT
-════════════════════════════════════ -->
-<div id="tab-result" class="container" style="display:none">
-  <div class="result-hero" id="resultHero">
-    <div class="result-score-big" id="resultScore">–</div>
-    <div class="result-verdict" id="resultVerdict">–</div>
-    <div class="score-bar-track">
-      <div class="score-bar-fill" id="resultBar" style="width:0%"></div>
-    </div>
-    <div class="result-meta" id="resultMeta">–</div>
+<!-- ══ RESULT ══ -->
+<div id="pg-result" class="page" style="display:none">
+  <div class="result-hero">
+    <div class="result-score" id="rScore">–</div>
+    <div class="result-verdict" id="rVerdict">–</div>
+    <div class="score-track"><div class="score-fill" id="rFill" style="width:0%"></div></div>
+    <div class="result-meta" id="rMeta">–</div>
   </div>
   <div class="card">
-    <div style="font-weight:600;margin-bottom:16px;font-size:14px">เฉลยคำตอบ</div>
-    <div id="resultDetail"></div>
+    <div style="font-weight:700;font-size:14px;margin-bottom:16px;color:var(--navy)">สรุปคำตอบ</div>
+    <div id="rDetail"></div>
   </div>
-  <div style="text-align:center;margin-top:20px;display:flex;gap:12px;justify-content:center">
-    <button class="btn btn-ghost" onclick="switchTab('home')">🏠 กลับหน้าหลัก</button>
-    <button class="btn btn-sky" onclick="retakeQuiz()">🔄 ทำใหม่</button>
+  <div class="flex" style="justify-content:center;margin-top:20px">
+    <button class="btn btn-ghost" onclick="tab('home')">🏠 หน้าหลัก</button>
+    <button class="btn btn-sky" onclick="retake()">🔄 ทำใหม่</button>
   </div>
 </div>
 
-<!-- ════════════════════════════════════
-     TAB: HISTORY
-════════════════════════════════════ -->
-<div id="tab-history" class="container" style="display:none">
-  <div class="section-hd">
+<!-- ══ HISTORY ══ -->
+<div id="pg-history" class="page" style="display:none">
+  <div class="sec-hd">
     <div>
-      <div class="section-title">ประวัติผลสอบ</div>
-      <div class="section-sub">บันทึกผลการทดสอบทั้งหมด</div>
+      <div class="sec-title">ประวัติผลสอบ</div>
+      <div class="sec-sub">บันทึกผลการทดสอบทั้งหมด (เรียงใหม่สุดก่อน)</div>
     </div>
     <div class="flex">
-      <select class="form-select" style="width:220px;font-size:13px" id="historyFilter" onchange="loadHistory()">
+      <select class="form-select" style="width:200px;font-size:12px" id="histFilter" onchange="loadHist()">
         <option value="">— ผลิตภัณฑ์ทั้งหมด —</option>
       </select>
-      <button class="btn btn-ghost btn-sm" onclick="loadHistory()">↻ รีเฟรช</button>
+      <button class="btn btn-ghost btn-sm" onclick="loadHist()">↻ รีเฟรช</button>
     </div>
   </div>
-  <div id="historyList">
-    <div class="loader"><div class="spinner"></div> กำลังโหลด...</div>
-  </div>
-</div>
-
-<!-- ════════════════════════════════════
-     TAB: SETTINGS
-════════════════════════════════════ -->
-<div id="tab-settings" class="container" style="display:none">
-  <div class="card" style="max-width:520px">
-    <div style="font-weight:600;margin-bottom:16px">🔗 Google Apps Script URL</div>
-    <div class="form-group">
-      <label class="form-label">Web App URL (จาก Deploy → Manage Deployments)</label>
-      <input class="form-input" id="apiUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
-      <div class="api-note">วาง URL แล้วกด Save — แอปจะใช้ URL นี้เป็น backend</div>
-    </div>
-    <div class="flex">
-      <button class="btn btn-primary" onclick="saveApiUrl()">💾 บันทึก URL</button>
-      <button class="btn btn-ghost btn-sm" onclick="testApi()">🔌 ทดสอบการเชื่อมต่อ</button>
-    </div>
-  </div>
-  <div class="card" style="max-width:520px;margin-top:0">
-    <div style="font-weight:600;margin-bottom:12px">ℹ️ คำแนะนำการ Deploy</div>
-    <ol style="font-size:13px;color:var(--muted);line-height:2;padding-left:20px">
-      <li>เปิด <strong>script.google.com</strong> → สร้าง Project ใหม่</li>
-      <li>วางโค้ดจาก <code style="background:var(--bg);padding:1px 5px;border-radius:3px">Code.gs</code> ลงใน editor</li>
-      <li>กด <strong>Deploy → New Deployment</strong></li>
-      <li>Type: <strong>Web App</strong> | Execute as: <strong>Me</strong> | Access: <strong>Anyone</strong></li>
-      <li>คัดลอก URL มาวางในช่องด้านบน</li>
-      <li>กลับมา Apps Script editor → Run function <strong>seedCeegQuestions</strong> หนึ่งครั้ง</li>
-    </ol>
+  <div class="card" style="overflow-x:auto">
+    <div id="histBody"><div class="loader"><div class="spin"></div></div></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════
-     MODALS
-════════════════════════════════════ -->
-
-<!-- PIN Modal -->
-<div class="modal-overlay" id="pinModal" style="display:none" onclick="closePinModal(event)">
-  <div class="modal pin-modal" style="max-width:340px">
-    <div class="modal-title">Admin PIN <button class="modal-close" onclick="hidePinModal()">✕</button></div>
-    <div class="form-group">
-      <input class="form-input" id="pinInput" type="password" maxlength="10"
-        placeholder="••••••" onkeydown="if(event.key==='Enter')checkPin()">
+<!-- ══ SETTINGS ══ -->
+<div id="pg-settings" class="page" style="display:none">
+  <div style="max-width:560px">
+    <div class="card">
+      <div style="font-weight:700;font-size:15px;color:var(--navy);margin-bottom:20px">🔗 API URL</div>
+      <div class="form-group">
+        <label class="form-label">Google Apps Script Web App URL</label>
+        <input class="form-input" id="apiInp" placeholder="https://script.google.com/macros/s/.../exec">
+      </div>
+      <div class="flex">
+        <button class="btn btn-primary" onclick="saveUrl()">💾 บันทึก</button>
+        <button class="btn btn-ghost btn-sm" onclick="testConn()">🔌 ทดสอบ</button>
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:var(--txt3)" id="urlStatus"></div>
     </div>
-    <div id="pinError" style="color:var(--red);font-size:12px;display:none">PIN ไม่ถูกต้อง</div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="hidePinModal()">ยกเลิก</button>
+    <div class="card">
+      <div style="font-weight:700;font-size:15px;color:var(--navy);margin-bottom:16px">📖 ขั้นตอน Deploy</div>
+      <div class="setup-step">
+        <div class="step-num">1</div>
+        <div class="step-content">เปิด <strong>Google Sheet</strong> ใหม่ → เมนู <strong>Extensions → Apps Script</strong></div>
+      </div>
+      <div class="setup-step">
+        <div class="step-num">2</div>
+        <div class="step-content">วางโค้ดจากไฟล์ <code>Code.gs</code> → Save</div>
+      </div>
+      <div class="setup-step">
+        <div class="step-num">3</div>
+        <div class="step-content"><strong>Deploy → New Deployment</strong> → Type: Web App → Execute as: <strong>Me</strong> → Access: <strong>Anyone</strong></div>
+      </div>
+      <div class="setup-step">
+        <div class="step-num">4</div>
+        <div class="step-content">คัดลอก URL มาวางในช่องด้านบน → บันทึก</div>
+      </div>
+      <div class="setup-step">
+        <div class="step-num">5</div>
+        <div class="step-content">กลับ Apps Script → เลือก function <code>seedCeegQuestions</code> → กด <strong>▶ Run</strong> (ทำครั้งเดียว)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<!-- PIN -->
+<div class="overlay" id="pinOv" style="display:none" onclick="if(event.target===this)hidePin()">
+  <div class="modal" style="max-width:340px">
+    <div class="modal-hd">
+      <div class="modal-title">🔐 Admin PIN</div>
+      <button class="modal-close" onclick="hidePin()">✕</button>
+    </div>
+    <div class="form-group">
+      <input class="form-input" id="pinInp" type="password" maxlength="12"
+        placeholder="••••••" style="font-size:20px;letter-spacing:.2em;text-align:center"
+        onkeydown="if(event.key==='Enter')checkPin()">
+    </div>
+    <div id="pinErr" style="color:var(--red);font-size:12px;display:none;margin-bottom:8px">PIN ไม่ถูกต้อง กรุณาลองใหม่</div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" onclick="hidePin()">ยกเลิก</button>
       <button class="btn btn-primary" onclick="checkPin()">เข้าสู่ระบบ</button>
     </div>
   </div>
 </div>
 
-<!-- Question Form Modal -->
-<div class="modal-overlay" id="qFormModal" style="display:none" onclick="closeQModal(event)">
+<!-- QUESTION FORM -->
+<div class="overlay" id="qOv" style="display:none" onclick="if(event.target===this)hideQForm()">
   <div class="modal">
-    <div class="modal-title">
-      <span id="qFormTitle">เพิ่มคำถาม</span>
-      <button class="modal-close" onclick="hideQModal()">✕</button>
+    <div class="modal-hd">
+      <div class="modal-title" id="qFormTitle">เพิ่มคำถาม</div>
+      <button class="modal-close" onclick="hideQForm()">✕</button>
     </div>
-    <input type="hidden" id="qEditId">
+    <input type="hidden" id="qId">
     <div class="form-group">
       <label class="form-label">คำถาม *</label>
-      <textarea class="form-textarea" id="qQuestion" placeholder="พิมพ์คำถาม..." rows="3"></textarea>
+      <textarea class="form-textarea" id="qQ" rows="3" placeholder="พิมพ์คำถาม..."></textarea>
     </div>
-    <div class="options-grid">
-      <div class="form-group">
-        <div class="opt-label">A</div>
-        <input class="form-input" id="qOptA" placeholder="ตัวเลือก A">
-      </div>
-      <div class="form-group">
-        <div class="opt-label">B</div>
-        <input class="form-input" id="qOptB" placeholder="ตัวเลือก B">
-      </div>
-      <div class="form-group">
-        <div class="opt-label">C</div>
-        <input class="form-input" id="qOptC" placeholder="ตัวเลือก C">
-      </div>
-      <div class="form-group">
-        <div class="opt-label">D</div>
-        <input class="form-input" id="qOptD" placeholder="ตัวเลือก D">
-      </div>
+    <div class="opts-grid">
+      <div class="form-group"><div class="opt-key">A</div><input class="form-input" id="qA" placeholder="ตัวเลือก A"></div>
+      <div class="form-group"><div class="opt-key">B</div><input class="form-input" id="qB" placeholder="ตัวเลือก B"></div>
+      <div class="form-group"><div class="opt-key">C</div><input class="form-input" id="qC" placeholder="ตัวเลือก C"></div>
+      <div class="form-group"><div class="opt-key">D</div><input class="form-input" id="qD" placeholder="ตัวเลือก D"></div>
     </div>
     <div class="form-group">
       <label class="form-label">คำตอบที่ถูกต้อง *</label>
-      <select class="form-select" id="qAnswer">
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
-        <option value="D">D</option>
+      <select class="form-select" id="qAns">
+        <option value="A">A</option><option value="B">B</option>
+        <option value="C">C</option><option value="D">D</option>
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label">คำอธิบายเฉลย (ไม่บังคับ)</label>
-      <textarea class="form-textarea" id="qExplanation" placeholder="อธิบายเหตุผลที่คำตอบนี้ถูกต้อง..." rows="2"></textarea>
+      <label class="form-label">คำอธิบายเฉลย</label>
+      <textarea class="form-textarea" id="qExp" rows="2" placeholder="อธิบายเหตุผล..."></textarea>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="hideQModal()">ยกเลิก</button>
-      <button class="btn btn-primary" onclick="submitQuestion()">💾 บันทึก</button>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" onclick="hideQForm()">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="submitQ()">💾 บันทึก</button>
     </div>
   </div>
 </div>
 
-<!-- Product Form Modal -->
-<div class="modal-overlay" id="productFormModal" style="display:none" onclick="closeProductModal(event)">
+<!-- PRODUCT FORM -->
+<div class="overlay" id="pOv" style="display:none" onclick="if(event.target===this)hideProdForm()">
   <div class="modal" style="max-width:400px">
-    <div class="modal-title">
-      <span id="productFormTitle">เพิ่มผลิตภัณฑ์</span>
-      <button class="modal-close" onclick="hideProductModal()">✕</button>
+    <div class="modal-hd">
+      <div class="modal-title" id="pFormTitle">เพิ่มผลิตภัณฑ์</div>
+      <button class="modal-close" onclick="hideProdForm()">✕</button>
     </div>
-    <input type="hidden" id="productEditId">
+    <input type="hidden" id="pId">
     <div class="form-group">
       <label class="form-label">ชื่อผลิตภัณฑ์ *</label>
-      <input class="form-input" id="productName" placeholder="ชื่อผลิตภัณฑ์">
+      <input class="form-input" id="pName" placeholder="ชื่อผลิตภัณฑ์">
     </div>
     <div class="form-group">
       <label class="form-label">คำอธิบาย</label>
-      <input class="form-input" id="productDesc" placeholder="รายละเอียดสั้นๆ">
+      <input class="form-input" id="pDesc" placeholder="รายละเอียดสั้นๆ">
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="hideProductModal()">ยกเลิก</button>
-      <button class="btn btn-primary" onclick="submitProduct()">💾 บันทึก</button>
+    <div class="modal-ft">
+      <button class="btn btn-ghost" onclick="hideProdForm()">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="submitProd()">💾 บันทึก</button>
     </div>
   </div>
 </div>
 
 <script>
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
+//  CONFIG — ใส่ URL ตรงนี้ได้เลย (fallback)
+// ══════════════════════════════════════════════
+const DEFAULT_URL = 'https://script.google.com/macros/s/AKfycbxfcIKhQV1RGIqOef4qYKW85CvK29WWiENi9WxRZ6qkrjNuAECBa5xY7PQx5NDuu5e2/exec';
+
+// ══════════════════════════════════════════════
 //  STATE
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 const S = {
-  apiUrl:       localStorage.getItem('el_api_url') || '',
-  isAdmin:      false,
-  products:     [],
-  questions:    [],
-  currentProduct: null,
-  // quiz session
-  quiz: {
-    salesName:   '',
-    questions:   [],
-    idx:         0,
-    answers:     [],
-    answered:    false,
-  }
+  apiUrl: localStorage.getItem('el_api_url') || DEFAULT_URL,
+  isAdmin: false,
+  products: [],
+  questions: [],
+  cur: null,
+  quiz: { sales:'', qs:[], idx:0, ans:[], done:false }
 };
 
-// ════════════════════════════════════════════════════════════
-//  API — Apps Script redirects GET to googleusercontent.com
-//  All mutations sent as GET ?payload=JSON to avoid CORS preflight
-// ════════════════════════════════════════════════════════════
-async function apiGet(params) {
-  if (!S.apiUrl) { showToast('กรุณาตั้งค่า API URL ก่อน','error'); throw new Error('no url'); }
-  const url = S.apiUrl + '?' + new URLSearchParams(params);
-  const r = await fetch(url, { redirect: 'follow' });
+// ══════════════════════════════════════════════
+//  API — GET for reads, GET?payload for writes
+// ══════════════════════════════════════════════
+async function get(params) {
+  if (!S.apiUrl) throw new Error('no url');
+  const r = await fetch(S.apiUrl + '?' + new URLSearchParams(params), { redirect:'follow' });
   const j = await r.json();
   if (!j.ok) throw new Error(j.error);
   return j.data;
 }
-
-async function apiPost(body) {
-  if (!S.apiUrl) { showToast('กรุณาตั้งค่า API URL ก่อน','error'); throw new Error('no url'); }
+async function post(body) {
+  if (!S.apiUrl) throw new Error('no url');
   const url = S.apiUrl + '?payload=' + encodeURIComponent(JSON.stringify(body));
-  const r = await fetch(url, { redirect: 'follow' });
+  const r = await fetch(url, { redirect:'follow' });
   const j = await r.json();
   if (!j.ok) throw new Error(j.error);
   return j.data;
 }
 
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  TABS
-// ════════════════════════════════════════════════════════════
-const TABS = ['home','manage','prequiz','quiz','result','history','settings'];
-function switchTab(name) {
-  TABS.forEach(t => {
-    document.getElementById('tab-'+t).style.display = t===name ? '' : 'none';
-  });
-  document.querySelectorAll('.nav-tab[data-tab]').forEach(el => {
-    el.classList.toggle('active', el.dataset.tab === name);
-  });
-  if (name === 'history') loadHistory();
+// ══════════════════════════════════════════════
+const PAGES = ['home','manage','prequiz','quiz','result','history','settings'];
+function tab(name) {
+  PAGES.forEach(p => document.getElementById('pg-'+p).style.display = p===name?'':'none');
+  document.querySelectorAll('.nav-tab[data-tab]').forEach(el =>
+    el.classList.toggle('active', el.dataset.tab===name));
+  if (name==='history') loadHist();
 }
 
-// ════════════════════════════════════════════════════════════
-//  HOME — PRODUCTS
-// ════════════════════════════════════════════════════════════
-async function loadProducts() {
-  const grid = document.getElementById('productGrid');
-  grid.innerHTML = '<div class="loader"><div class="spinner"></div> กำลังโหลด...</div>';
+// ══════════════════════════════════════════════
+//  PRODUCT ICONS
+// ══════════════════════════════════════════════
+const ICONS = {
+  'atmos-natal':'🌅','atmos-colpo':'🔬','bilicare':'👶','biomed':'🏥',
+  'brain-monitor':'🧠','cfm-aeeg':'📊','criticool':'❄️','derungs':'💡',
+  'hearing-screen':'👂','medix':'💊','mbi':'🖼','phototherapy':'☀️','vacumed':'🩺'
+};
+function icon(id) { return ICONS[id] || '📦'; }
+
+// ══════════════════════════════════════════════
+//  HOME
+// ══════════════════════════════════════════════
+async function loadHome() {
+  const grid = document.getElementById('prodGrid');
+  grid.innerHTML = '<div class="loader"><div class="spin"></div> กำลังโหลด...</div>';
   try {
-    S.products = await apiGet({ action:'getProducts' });
-    // load question counts per product
-    const qAll = await apiGet({ action:'getQuestions' });
-    renderProducts(qAll);
+    const [prods, allQ] = await Promise.all([
+      get({ action:'getProducts' }),
+      get({ action:'getQuestions' })
+    ]);
+    S.products = prods;
+    const cnt = {};
+    allQ.forEach(q => { cnt[q.productId] = (cnt[q.productId]||0)+1; });
+
+    if (!prods.length) {
+      grid.innerHTML = '<div class="empty">ยังไม่มีผลิตภัณฑ์<br><small>เพิ่มผลิตภัณฑ์ในโหมด Admin</small></div>';
+      return;
+    }
+    grid.innerHTML = prods.map(p => `
+      <div class="prod-card" onclick="openProd('${p.id}')">
+        <div class="prod-accent"></div>
+        ${S.isAdmin ? `
+        <div class="prod-actions" onclick="event.stopPropagation()">
+          <button class="btn-ic" onclick="showProdForm('${p.id}')" title="แก้ไข">✏️</button>
+          <button class="btn-ic danger" onclick="delProd('${p.id}','${p.name.replace(/'/g,"\\'")}')">🗑</button>
+        </div>`:``}
+        <div class="prod-icon">${icon(p.id)}</div>
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-desc">${p.description}</div>
+        <div class="prod-count">${cnt[p.id]||0} คำถาม</div>
+      </div>`).join('');
   } catch(e) {
-    grid.innerHTML = `<div class="empty">
-      ⚠️ ไม่สามารถเชื่อมต่อได้<br>
-      <span style="font-size:12px">กรุณาตั้งค่า API URL ในแท็บ ⚙️ ตั้งค่า</span>
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1">
+      ⚠️ เชื่อมต่อ backend ไม่ได้<br>
+      <small>กรุณาตั้งค่า API URL ในแท็บ ⚙️ ตั้งค่า</small>
     </div>`;
   }
 }
 
-function renderProducts(allQ) {
-  const grid = document.getElementById('productGrid');
-  if (!S.products.length) {
-    grid.innerHTML = '<div class="empty">ยังไม่มีผลิตภัณฑ์</div>';
-    return;
-  }
-  const countMap = {};
-  allQ.forEach(q => { countMap[q.productId] = (countMap[q.productId]||0)+1; });
-
-  grid.innerHTML = S.products.map(p => `
-    <div class="product-card" onclick="openProduct('${p.id}')">
-      ${S.isAdmin ? `
-      <div class="product-actions" onclick="event.stopPropagation()">
-        <button class="btn-icon" onclick="showProductForm('${p.id}')" title="แก้ไข">✏️</button>
-        <button class="btn-icon danger" onclick="deleteProductConfirm('${p.id}','${p.name}')" title="ลบ">🗑</button>
-      </div>` : ''}
-      <div class="product-name">${p.name}</div>
-      <div class="product-desc">${p.description}</div>
-      <div class="product-count">${countMap[p.id]||0} คำถาม</div>
-    </div>
-  `).join('');
+async function openProd(id) {
+  S.cur = S.products.find(p=>p.id===id);
+  if (!S.cur) return;
+  await loadQ(id);
+  document.getElementById('mgLbl').textContent = S.cur.description;
+  document.getElementById('mgTitle').textContent = S.cur.name;
+  tab('manage');
 }
 
-async function openProduct(id) {
-  S.currentProduct = S.products.find(p => p.id === id);
-  if (!S.currentProduct) return;
-  await loadQuestions(id);
-  document.getElementById('manageProductLabel').textContent = S.currentProduct.description;
-  document.getElementById('manageTitle').textContent = S.currentProduct.name;
-  switchTab('manage');
-}
-
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  MANAGE QUESTIONS
-// ════════════════════════════════════════════════════════════
-async function loadQuestions(productId) {
-  const list = document.getElementById('questionList');
-  list.innerHTML = '<div class="loader"><div class="spinner"></div></div>';
+// ══════════════════════════════════════════════
+async function loadQ(pid) {
+  const el = document.getElementById('qList');
+  el.innerHTML = '<div class="loader"><div class="spin"></div></div>';
   try {
-    S.questions = await apiGet({ action:'getQuestions', productId: productId||S.currentProduct.id });
-    renderQuestions();
-  } catch(e) {
-    list.innerHTML = '<div class="empty">โหลดคำถามไม่สำเร็จ</div>';
-  }
+    S.questions = await get({ action:'getQuestions', productId: pid||S.cur.id });
+    renderQ();
+  } catch(e) { el.innerHTML = '<div class="empty">โหลดคำถามไม่สำเร็จ</div>'; }
 }
 
-function renderQuestions() {
-  const list = document.getElementById('questionList');
+function renderQ() {
+  const el = document.getElementById('qList');
   if (!S.questions.length) {
-    list.innerHTML = '<div class="empty">ยังไม่มีคำถามในผลิตภัณฑ์นี้<br><span style="font-size:12px">กด + เพิ่มคำถาม เพื่อเริ่มต้น</span></div>';
+    el.innerHTML = '<div class="empty">ยังไม่มีคำถาม<br><small>กด + คำถาม เพื่อเพิ่ม</small></div>';
     return;
   }
-  list.innerHTML = S.questions.map((q,i) => `
+  el.innerHTML = S.questions.map((q,i) => `
     <div class="q-row">
       <span class="q-num">${i+1}</span>
       <span class="q-text">${q.question}</span>
       <span class="q-ans">${q.answer}</span>
-      ${S.isAdmin ? `
-      <div class="q-actions">
-        <button class="btn-icon" onclick="showQuestionForm('${q.id}')" title="แก้ไข">✏️</button>
-        <button class="btn-icon danger" onclick="deleteQ('${q.id}')" title="ลบ">🗑</button>
-      </div>` : ''}
-    </div>
-  `).join('');
+      ${S.isAdmin ? `<div class="q-actions">
+        <button class="btn-ic" onclick="showQForm('${q.id}')">✏️</button>
+        <button class="btn-ic danger" onclick="delQ('${q.id}')">🗑</button>
+      </div>`:''}
+    </div>`).join('');
 }
 
-// ════════════════════════════════════════════════════════════
-//  QUESTION FORM
-// ════════════════════════════════════════════════════════════
-function showQuestionForm(editId) {
-  const q = editId ? S.questions.find(x=>x.id===editId) : null;
+function showQForm(eid) {
+  const q = eid ? S.questions.find(x=>x.id===eid) : null;
   document.getElementById('qFormTitle').textContent = q ? 'แก้ไขคำถาม' : 'เพิ่มคำถาม';
-  document.getElementById('qEditId').value        = q ? q.id : '';
-  document.getElementById('qQuestion').value      = q ? q.question : '';
-  document.getElementById('qOptA').value          = q ? q.options.A : '';
-  document.getElementById('qOptB').value          = q ? q.options.B : '';
-  document.getElementById('qOptC').value          = q ? q.options.C : '';
-  document.getElementById('qOptD').value          = q ? q.options.D : '';
-  document.getElementById('qAnswer').value        = q ? q.answer : 'A';
-  document.getElementById('qExplanation').value   = q ? q.explanation : '';
-  document.getElementById('qFormModal').style.display = 'flex';
+  document.getElementById('qId').value    = q?.id||'';
+  document.getElementById('qQ').value     = q?.question||'';
+  document.getElementById('qA').value     = q?.options?.A||'';
+  document.getElementById('qB').value     = q?.options?.B||'';
+  document.getElementById('qC').value     = q?.options?.C||'';
+  document.getElementById('qD').value     = q?.options?.D||'';
+  document.getElementById('qAns').value   = q?.answer||'A';
+  document.getElementById('qExp').value   = q?.explanation||'';
+  document.getElementById('qOv').style.display='flex';
 }
-function hideQModal()  { document.getElementById('qFormModal').style.display='none'; }
-function closeQModal(e){ if(e.target===document.getElementById('qFormModal')) hideQModal(); }
+function hideQForm() { document.getElementById('qOv').style.display='none'; }
 
-async function submitQuestion() {
-  const id   = document.getElementById('qEditId').value;
+async function submitQ() {
+  const id   = document.getElementById('qId').value;
   const body = {
-    action:      'saveQuestion',
-    id:          id || undefined,
-    productId:   S.currentProduct.id,
-    question:    document.getElementById('qQuestion').value.trim(),
-    options: {
-      A: document.getElementById('qOptA').value.trim(),
-      B: document.getElementById('qOptB').value.trim(),
-      C: document.getElementById('qOptC').value.trim(),
-      D: document.getElementById('qOptD').value.trim(),
-    },
-    answer:      document.getElementById('qAnswer').value,
-    explanation: document.getElementById('qExplanation').value.trim(),
+    action:'saveQuestion', id:id||undefined,
+    productId:S.cur.id,
+    question:document.getElementById('qQ').value.trim(),
+    options:{A:document.getElementById('qA').value.trim(),B:document.getElementById('qB').value.trim(),
+             C:document.getElementById('qC').value.trim(),D:document.getElementById('qD').value.trim()},
+    answer:document.getElementById('qAns').value,
+    explanation:document.getElementById('qExp').value.trim()
   };
-  if (!body.question || !body.options.A || !body.options.B || !body.options.C || !body.options.D) {
-    showToast('กรุณากรอกคำถามและตัวเลือกให้ครบ','error'); return;
-  }
+  if (!body.question||!body.options.A||!body.options.B||!body.options.C||!body.options.D)
+    return toast('กรุณากรอกให้ครบ','error');
   try {
-    await apiPost(body);
-    hideQModal();
-    showToast('บันทึกคำถามสำเร็จ','success');
-    await loadQuestions();
-  } catch(e) { showToast('เกิดข้อผิดพลาด: '+e.message,'error'); }
+    await post(body); hideQForm(); toast('บันทึกสำเร็จ','success'); await loadQ();
+  } catch(e) { toast('เกิดข้อผิดพลาด: '+e.message,'error'); }
 }
 
-async function deleteQ(id) {
+async function delQ(id) {
   if (!confirm('ลบคำถามนี้?')) return;
-  try {
-    await apiPost({ action:'deleteQuestion', id });
-    showToast('ลบคำถามแล้ว','info');
-    await loadQuestions();
-  } catch(e) { showToast('ลบไม่สำเร็จ','error'); }
+  try { await post({action:'deleteQuestion',id}); toast('ลบแล้ว','info'); await loadQ(); }
+  catch(e) { toast('ลบไม่ได้','error'); }
 }
 
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  PRODUCT FORM
-// ════════════════════════════════════════════════════════════
-function showProductForm(editId) {
-  const p = editId ? S.products.find(x=>x.id===editId) : null;
-  document.getElementById('productFormTitle').textContent = p ? 'แก้ไขผลิตภัณฑ์' : 'เพิ่มผลิตภัณฑ์';
-  document.getElementById('productEditId').value = p ? p.id : '';
-  document.getElementById('productName').value   = p ? p.name : '';
-  document.getElementById('productDesc').value   = p ? p.description : '';
-  document.getElementById('productFormModal').style.display='flex';
+// ══════════════════════════════════════════════
+function showProdForm(eid) {
+  const p = eid ? S.products.find(x=>x.id===eid) : null;
+  document.getElementById('pFormTitle').textContent = p ? 'แก้ไขผลิตภัณฑ์' : 'เพิ่มผลิตภัณฑ์';
+  document.getElementById('pId').value   = p?.id||'';
+  document.getElementById('pName').value = p?.name||'';
+  document.getElementById('pDesc').value = p?.description||'';
+  document.getElementById('pOv').style.display='flex';
 }
-function hideProductModal()  { document.getElementById('productFormModal').style.display='none'; }
-function closeProductModal(e){ if(e.target===document.getElementById('productFormModal')) hideProductModal(); }
+function hideProdForm() { document.getElementById('pOv').style.display='none'; }
 
-async function submitProduct() {
-  const id   = document.getElementById('productEditId').value;
-  const name = document.getElementById('productName').value.trim();
-  const desc = document.getElementById('productDesc').value.trim();
-  if (!name) { showToast('กรุณาใส่ชื่อผลิตภัณฑ์','error'); return; }
+async function submitProd() {
+  const id   = document.getElementById('pId').value;
+  const name = document.getElementById('pName').value.trim();
+  const desc = document.getElementById('pDesc').value.trim();
+  if (!name) return toast('กรุณาใส่ชื่อผลิตภัณฑ์','error');
   try {
-    await apiPost({ action:'saveProduct', id:id||undefined, name, description:desc });
-    hideProductModal();
-    showToast('บันทึกผลิตภัณฑ์สำเร็จ','success');
-    await loadProducts();
-  } catch(e) { showToast('เกิดข้อผิดพลาด','error'); }
+    await post({action:'saveProduct',id:id||undefined,name,description:desc});
+    hideProdForm(); toast('บันทึกสำเร็จ','success'); await loadHome();
+  } catch(e) { toast('เกิดข้อผิดพลาด','error'); }
 }
 
-async function deleteProductConfirm(id, name) {
-  if (!confirm(`ลบผลิตภัณฑ์ "${name}"?\nคำถามทั้งหมดจะยังคงอยู่ใน Sheet`)) return;
-  try {
-    await apiPost({ action:'deleteProduct', id });
-    showToast('ลบผลิตภัณฑ์แล้ว','info');
-    await loadProducts();
-  } catch(e) { showToast('ลบไม่สำเร็จ','error'); }
+async function delProd(id,name) {
+  if (!confirm(`ลบผลิตภัณฑ์ "${name}"?`)) return;
+  try { await post({action:'deleteProduct',id}); toast('ลบแล้ว','info'); await loadHome(); }
+  catch(e) { toast('ลบไม่ได้','error'); }
 }
 
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  PRE-QUIZ
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 function startPreQuiz() {
-  if (!S.questions.length) { showToast('ยังไม่มีคำถามในผลิตภัณฑ์นี้','error'); return; }
-  document.getElementById('prequizProductName').textContent = S.currentProduct.name;
-  document.getElementById('prequizMeta').innerHTML =
-    `จำนวน <strong>${S.questions.length}</strong> ข้อ &nbsp;·&nbsp; เกณฑ์ผ่าน <strong>80%</strong>`;
-  document.getElementById('salesNameInput').value = '';
-  switchTab('prequiz');
+  if (!S.questions.length) return toast('ยังไม่มีคำถามในผลิตภัณฑ์นี้','error');
+  document.getElementById('pqProd').textContent  = S.cur.name;
+  document.getElementById('pqDesc').textContent  = S.cur.description;
+  document.getElementById('pqCount').textContent = S.questions.length;
+  document.getElementById('salesName').value = '';
+  tab('prequiz');
+  setTimeout(()=>document.getElementById('salesName').focus(),200);
 }
 
-// ════════════════════════════════════════════════════════════
-//  QUIZ SESSION
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
+//  QUIZ
+// ══════════════════════════════════════════════
 function startQuiz() {
-  const name = document.getElementById('salesNameInput').value.trim();
-  if (!name) { showToast('กรุณาใส่ชื่อพนักงานขาย','error'); return; }
+  const name = document.getElementById('salesName').value.trim();
+  if (!name) return toast('กรุณาใส่ชื่อ','error');
   const shuffled = [...S.questions].sort(()=>Math.random()-.5);
-  S.quiz = { salesName:name, questions:shuffled, idx:0, answers:[], answered:false };
-  document.getElementById('quizProductLabel').textContent = S.currentProduct.name;
-  document.getElementById('quizSalesName').textContent = name;
-  switchTab('quiz');
-  renderQuestion();
+  S.quiz = { sales:name, qs:shuffled, idx:0, ans:[], done:false };
+  document.getElementById('qzProd').textContent  = S.cur.name;
+  document.getElementById('qzSales').textContent = name;
+  tab('quiz'); renderQz();
 }
 
-function renderQuestion() {
-  const { questions, idx } = S.quiz;
-  const q = questions[idx];
-  const pct = Math.round((idx/questions.length)*100);
+function renderQz() {
+  const { qs, idx } = S.quiz;
+  const q = qs[idx];
+  const pct = Math.round((idx/qs.length)*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('qzCtr').textContent    = `ข้อ ${idx+1} จาก ${qs.length}`;
+  document.getElementById('qzText').textContent   = q.question;
+  document.getElementById('qzExpl').style.display = 'none';
+  document.getElementById('qzNext').style.display = 'none';
+  S.quiz.done = false;
 
-  document.getElementById('progressFill').style.width = pct+'%';
-  document.getElementById('quizCounter').textContent  = `${idx+1} / ${questions.length}`;
-  document.getElementById('questionText').textContent  = q.question;
-  document.getElementById('explanationBox').style.display = 'none';
-  document.getElementById('nextBtn').style.display    = 'none';
-  S.quiz.answered = false;
-
-  const list = document.getElementById('optionsList');
-  list.innerHTML = ['A','B','C','D'].map(key => `
-    <button class="option-btn" onclick="answerQ('${key}')">
-      <span class="opt-key">${key}</span>
-      <span>${q.options[key]}</span>
-    </button>
-  `).join('');
+  document.getElementById('qzOpts').innerHTML = ['A','B','C','D'].map(k => `
+    <button class="opt-btn" onclick="ansQ('${k}')">
+      <span class="opt-k">${k}</span>
+      <span>${q.options[k]}</span>
+    </button>`).join('');
 }
 
-function answerQ(chosen) {
-  if (S.quiz.answered) return;
-  S.quiz.answered = true;
-  const q = S.quiz.questions[S.quiz.idx];
-  S.quiz.answers.push({ qid:q.id, question:q.question, chosen, correct:q.answer });
+function ansQ(chosen) {
+  if (S.quiz.done) return;
+  S.quiz.done = true;
+  const q = S.quiz.qs[S.quiz.idx];
+  S.quiz.ans.push({qid:q.id,question:q.question,chosen,correct:q.answer});
 
-  const btns = document.querySelectorAll('.option-btn');
-  btns.forEach((btn,i) => {
-    const key = ['A','B','C','D'][i];
+  document.querySelectorAll('.opt-btn').forEach((btn,i) => {
+    const k = ['A','B','C','D'][i];
     btn.disabled = true;
-    if (key === q.answer) btn.classList.add('correct');
-    else if (key === chosen && chosen !== q.answer) btn.classList.add('wrong');
+    if (k===q.answer) btn.classList.add('correct');
+    else if (k===chosen) btn.classList.add('wrong');
   });
 
   if (q.explanation) {
-    const box = document.getElementById('explanationBox');
+    const box = document.getElementById('qzExpl');
     box.textContent = '💡 ' + q.explanation;
     box.style.display = 'block';
   }
-
-  const isLast = S.quiz.idx >= S.quiz.questions.length - 1;
-  const nextBtn = document.getElementById('nextBtn');
-  nextBtn.textContent = isLast ? 'ดูผลลัพธ์ →' : 'ข้อถัดไป →';
-  nextBtn.style.display = '';
+  const nxt = document.getElementById('qzNext');
+  nxt.textContent = S.quiz.idx >= S.quiz.qs.length-1 ? '📊 ดูผลลัพธ์ →' : 'ข้อถัดไป →';
+  nxt.style.display = '';
 }
 
-function nextQuestion() {
+function nextQ() {
   S.quiz.idx++;
-  if (S.quiz.idx >= S.quiz.questions.length) {
-    showResult();
-  } else {
-    renderQuestion();
-  }
+  if (S.quiz.idx >= S.quiz.qs.length) showResult();
+  else renderQz();
 }
 
-function retakeQuiz() {
-  S.quiz.idx = 0;
-  S.quiz.answers = [];
-  S.quiz.questions = [...S.quiz.questions].sort(()=>Math.random()-.5);
-  switchTab('quiz');
-  renderQuestion();
+function retake() {
+  S.quiz.idx=0; S.quiz.ans=[];
+  S.quiz.qs=[...S.quiz.qs].sort(()=>Math.random()-.5);
+  tab('quiz'); renderQz();
 }
 
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  RESULT
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 async function showResult() {
-  const { answers, salesName } = S.quiz;
-  const score  = answers.filter(a=>a.chosen===a.correct).length;
-  const total  = answers.length;
-  const pct    = Math.round((score/total)*100);
+  const { ans, sales } = S.quiz;
+  const score  = ans.filter(a=>a.chosen===a.correct).length;
+  const total  = ans.length;
+  const pct    = Math.round(score/total*100);
   const passed = pct >= 80;
 
-  document.getElementById('resultScore').textContent   = `${score}/${total}`;
-  document.getElementById('resultVerdict').textContent = passed ? '✅ ผ่าน' : '❌ ไม่ผ่าน';
-
-  const bar = document.getElementById('resultBar');
-  bar.style.background = passed ? '#10b981' : '#ef4444';
-  setTimeout(()=>{ bar.style.width = pct+'%'; }, 100);
+  document.getElementById('rScore').innerHTML   = `${score}<span style="font-size:32px;opacity:.5">/${total}</span>`;
+  document.getElementById('rVerdict').textContent = passed ? '✅ ผ่าน!' : '❌ ยังไม่ผ่าน';
+  const fill = document.getElementById('rFill');
+  fill.style.background = passed ? 'linear-gradient(90deg,#11c98a,#00e6a0)' : 'linear-gradient(90deg,#f04e4e,#ff7070)';
+  setTimeout(()=>{ fill.style.width=pct+'%'; },100);
 
   const now = new Date().toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});
-  document.getElementById('resultMeta').innerHTML =
-    `${salesName} &nbsp;·&nbsp; ${S.currentProduct.name} &nbsp;·&nbsp; ${now}`;
+  document.getElementById('rMeta').textContent = `${sales} · ${S.cur.name} · ${now} · ${pct}%`;
 
-  document.getElementById('resultDetail').innerHTML = answers.map((a,i)=>`
-    <div class="result-detail-row">
+  document.getElementById('rDetail').innerHTML = ans.map((a,i)=>`
+    <div class="rdr">
       <span class="rdr-num">${i+1}</span>
       <span class="rdr-q">${a.question}
-        <br><small style="color:var(--muted)">คุณตอบ: <strong>${a.chosen}</strong> | เฉลย: <strong>${a.correct}</strong></small>
+        <br><small>คุณตอบ <strong>${a.chosen}</strong> · เฉลย <strong>${a.correct}</strong></small>
       </span>
-      <span class="rdr-badge ${a.chosen===a.correct?'badge-correct':'badge-wrong'}">
-        ${a.chosen===a.correct?'ถูก':'ผิด'}
-      </span>
-    </div>
-  `).join('');
+      <span class="badge ${a.chosen===a.correct?'badge-ok':'badge-ng'}">${a.chosen===a.correct?'✓ ถูก':'✗ ผิด'}</span>
+    </div>`).join('');
 
-  switchTab('result');
-
-  // save to sheet
+  tab('result');
   try {
-    await apiPost({
-      action:      'saveResult',
-      salesName,
-      productId:   S.currentProduct.id,
-      productName: S.currentProduct.name,
+    await post({
+      action:'saveResult', salesName:sales,
+      productId:S.cur.id, productName:S.cur.name,
       score, total, passed,
-      detail: answers.map(a=>({q:a.question,chosen:a.chosen,correct:a.correct}))
+      detail:ans.map(a=>({q:a.question,chosen:a.chosen,correct:a.correct}))
     });
   } catch(e) { console.warn('save result failed',e); }
 }
 
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  HISTORY
-// ════════════════════════════════════════════════════════════
-async function loadHistory() {
-  const list     = document.getElementById('historyList');
-  const filterId = document.getElementById('historyFilter').value;
-  list.innerHTML = '<div class="loader"><div class="spinner"></div> กำลังโหลด...</div>';
-
+// ══════════════════════════════════════════════
+async function loadHist() {
+  const body = document.getElementById('histBody');
+  const fid  = document.getElementById('histFilter').value;
+  body.innerHTML = '<div class="loader"><div class="spin"></div></div>';
   try {
-    const data = await apiGet({ action:'getResults', productId:filterId });
-    if (!data.length) {
-      list.innerHTML = '<div class="empty">ยังไม่มีประวัติการสอบ</div>';
-      return;
-    }
-    list.innerHTML = `
-      <div class="history-row history-header">
-        <span>ชื่อพนักงาน</span><span>ผลิตภัณฑ์</span><span>คะแนน</span><span>ผลสอบ</span><span>วันที่</span>
-      </div>
-      ${data.map(r=>`
-      <div class="history-row">
-        <span style="font-weight:500">${r.salesName}</span>
-        <span><span class="chip">${r.productName}</span></span>
-        <span style="font-family:var(--mono)">${r.score}/${r.total} <small style="color:var(--muted)">(${Math.round(r.score/r.total*100)}%)</small></span>
-        <span>${r.passed ? '<span class="tag-pass">ผ่าน</span>' : '<span class="tag-fail">ไม่ผ่าน</span>'}</span>
-        <span style="font-size:12px;color:var(--muted)">${r.timestamp}</span>
-      </div>`).join('')}
-    `;
-  } catch(e) {
-    list.innerHTML = '<div class="empty">โหลดประวัติไม่สำเร็จ</div>';
-  }
+    const data = await get({ action:'getResults', productId:fid });
+    if (!data.length) { body.innerHTML='<div class="empty">ยังไม่มีประวัติ</div>'; return; }
+    body.innerHTML = `
+      <table class="hist-table">
+        <thead><tr>
+          <th>ชื่อพนักงาน</th><th>ผลิตภัณฑ์</th>
+          <th>คะแนน</th><th>ผลสอบ</th><th>วันที่</th>
+        </tr></thead>
+        <tbody>${data.map(r=>`
+        <tr>
+          <td style="font-weight:600">${r.salesName}</td>
+          <td><span class="chip">${r.productName}</span></td>
+          <td style="font-family:var(--mono)">${r.score}/${r.total}
+            <small style="color:var(--txt3)"> (${Math.round(r.score/r.total*100)}%)</small></td>
+          <td>${r.passed?'<span class="tag-pass">ผ่าน</span>':'<span class="tag-fail">ไม่ผ่าน</span>'}</td>
+          <td style="font-size:12px;color:var(--txt3)">${r.timestamp}</td>
+        </tr>`).join('')}
+        </tbody>
+      </table>`;
+  } catch(e) { body.innerHTML='<div class="empty">โหลดไม่สำเร็จ</div>'; }
 }
 
-function populateHistoryFilter() {
-  const sel = document.getElementById('historyFilter');
+function populateHistFilter() {
+  const sel = document.getElementById('histFilter');
   sel.innerHTML = '<option value="">— ผลิตภัณฑ์ทั้งหมด —</option>' +
     S.products.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
 }
 
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  SETTINGS
-// ════════════════════════════════════════════════════════════
-function saveApiUrl() {
-  const url = document.getElementById('apiUrlInput').value.trim();
-  if (!url) { showToast('กรุณาใส่ URL','error'); return; }
-  S.apiUrl = url;
-  localStorage.setItem('el_api_url', url);
-  showToast('บันทึก URL สำเร็จ','success');
-  loadProducts();
+// ══════════════════════════════════════════════
+function saveUrl() {
+  const u = document.getElementById('apiInp').value.trim();
+  if (!u) return toast('กรุณาใส่ URL','error');
+  S.apiUrl = u;
+  localStorage.setItem('el_api_url', u);
+  toast('บันทึก URL แล้ว','success');
+  document.getElementById('urlStatus').textContent = '✓ บันทึกแล้ว — กด ทดสอบ เพื่อยืนยัน';
+  loadHome();
 }
 
-async function testApi() {
+async function testConn() {
   try {
-    const r = await apiGet({ action:'ping' });
-    showToast('✅ เชื่อมต่อสำเร็จ: '+r,'success');
+    const r = await get({ action:'ping' });
+    toast('✅ เชื่อมต่อสำเร็จ: '+r,'success');
+    document.getElementById('urlStatus').textContent = '✓ เชื่อมต่อได้ปกติ';
   } catch(e) {
-    showToast('❌ เชื่อมต่อไม่ได้: '+e.message,'error');
+    toast('❌ เชื่อมต่อไม่ได้: '+e.message,'error');
+    document.getElementById('urlStatus').textContent = '✗ เชื่อมต่อไม่ได้: '+e.message;
   }
 }
 
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  ADMIN PIN
-// ════════════════════════════════════════════════════════════
-function showPinModal()  {
-  document.getElementById('pinInput').value='';
-  document.getElementById('pinError').style.display='none';
-  document.getElementById('pinModal').style.display='flex';
-  setTimeout(()=>document.getElementById('pinInput').focus(),100);
+// ══════════════════════════════════════════════
+function showPin() {
+  document.getElementById('pinInp').value='';
+  document.getElementById('pinErr').style.display='none';
+  document.getElementById('pinOv').style.display='flex';
+  setTimeout(()=>document.getElementById('pinInp').focus(),100);
 }
-function hidePinModal()  { document.getElementById('pinModal').style.display='none'; }
-function closePinModal(e){ if(e.target===document.getElementById('pinModal')) hidePinModal(); }
+function hidePin() { document.getElementById('pinOv').style.display='none'; }
 
 async function checkPin() {
-  const pin = document.getElementById('pinInput').value.trim();
+  const pin = document.getElementById('pinInp').value.trim();
   try {
-    const result = await apiPost({ action:'verifyPin', pin });
-    if (result === 'ok') {
-      S.isAdmin = true;
-      hidePinModal();
-      setAdminUI(true);
-      showToast('เข้าสู่ระบบ Admin สำเร็จ','success');
-      await loadProducts();
+    const r = await post({ action:'verifyPin', pin });
+    if (r==='ok') {
+      S.isAdmin=true; hidePin(); setAdmin(true);
+      toast('เข้าสู่ระบบ Admin สำเร็จ 🎉','success');
+      await loadHome();
     } else {
-      document.getElementById('pinError').style.display='block';
+      document.getElementById('pinErr').style.display='block';
     }
-  } catch(e) {
-    showToast('ตรวจสอบ PIN ไม่ได้','error');
-  }
+  } catch(e) { toast('ตรวจสอบ PIN ไม่ได้','error'); }
 }
 
-function setAdminUI(on) {
-  document.getElementById('addProductBtn').style.display = on ? '' : 'none';
-  document.getElementById('tab-manage').classList.toggle('hidden', !on);
-  const hr = document.getElementById('headerRight');
-  hr.innerHTML = on
-    ? `<span class="badge-admin">ADMIN</span> <button class="btn-admin" onclick="logoutAdmin()">ออก</button>`
-    : `<button class="btn-admin" onclick="showPinModal()">Admin</button>`;
+function setAdmin(on) {
+  document.getElementById('btnAddProd').style.display = on?'':'none';
+  document.getElementById('tabManage').classList.toggle('hidden',!on);
+  document.getElementById('hdrRight').innerHTML = on
+    ? `<span class="badge-admin">ADMIN</span> <button class="btn-admin-hdr" onclick="logout()">ออก</button>`
+    : `<button class="btn-admin-hdr" onclick="showPin()">🔐 Admin</button>`;
 }
 
-function logoutAdmin() {
-  S.isAdmin = false;
-  setAdminUI(false);
-  showToast('ออกจากระบบ Admin','info');
-  if (document.getElementById('tab-manage').style.display!=='none') switchTab('home');
-  loadProducts();
+function logout() {
+  S.isAdmin=false; setAdmin(false);
+  toast('ออกจากระบบ Admin','info');
+  const cur = PAGES.find(p=>document.getElementById('pg-'+p).style.display!=='none');
+  if (cur==='manage') tab('home');
+  loadHome();
 }
 
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  TOAST
-// ════════════════════════════════════════════════════════════
-function showToast(msg, type='info') {
-  const toast = document.getElementById('toast');
+// ══════════════════════════════════════════════
+function toast(msg, type='info') {
   const el = document.createElement('div');
   el.className = `toast-item toast-${type}`;
   el.textContent = msg;
-  toast.appendChild(el);
+  document.getElementById('toast').appendChild(el);
   setTimeout(()=>el.remove(), 3200);
 }
 
-// ════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  INIT
-// ════════════════════════════════════════════════════════════
-document.getElementById('apiUrlInput').value = S.apiUrl;
-
-if (S.apiUrl) {
-  loadProducts().then(()=>{ if(S.products.length) populateHistoryFilter(); });
-} else {
-  document.getElementById('productGrid').innerHTML =
-    '<div class="empty">⚙️ กรุณาตั้งค่า API URL ในแท็บ ตั้งค่า ก่อน</div>';
-}
+// ══════════════════════════════════════════════
+document.getElementById('apiInp').value = S.apiUrl;
+loadHome().then(()=>populateHistFilter());
 </script>
 </body>
 </html>
