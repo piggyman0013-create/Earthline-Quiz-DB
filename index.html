@@ -918,12 +918,13 @@ const S = {
 };
 
 // ════════════════════════════════════════════════════════════
-//  API
+//  API — Apps Script redirects GET to googleusercontent.com
+//  All mutations sent as GET ?payload=JSON to avoid CORS preflight
 // ════════════════════════════════════════════════════════════
 async function apiGet(params) {
   if (!S.apiUrl) { showToast('กรุณาตั้งค่า API URL ก่อน','error'); throw new Error('no url'); }
   const url = S.apiUrl + '?' + new URLSearchParams(params);
-  const r = await fetch(url);
+  const r = await fetch(url, { redirect: 'follow' });
   const j = await r.json();
   if (!j.ok) throw new Error(j.error);
   return j.data;
@@ -931,11 +932,8 @@ async function apiGet(params) {
 
 async function apiPost(body) {
   if (!S.apiUrl) { showToast('กรุณาตั้งค่า API URL ก่อน','error'); throw new Error('no url'); }
-  const r = await fetch(S.apiUrl, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(body)
-  });
+  const url = S.apiUrl + '?payload=' + encodeURIComponent(JSON.stringify(body));
+  const r = await fetch(url, { redirect: 'follow' });
   const j = await r.json();
   if (!j.ok) throw new Error(j.error);
   return j.data;
