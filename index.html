@@ -403,6 +403,29 @@ input,select,textarea{font-family:var(--sans)}
   .stat-row{grid-template-columns:1fr 1fr}
   .hist-table th:nth-child(n+4),.hist-table td:nth-child(n+4){display:none}
 }
+/* ── CHEAT WARNING OVERLAY ── */
+.cheat-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(12,35,64,.92);
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(6px);
+  animation:fadeIn .2s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.cheat-box{
+  background:#fff;border-radius:20px;
+  padding:40px 36px;text-align:center;
+  max-width:380px;width:90%;
+  box-shadow:0 32px 80px rgba(0,0,0,.4);
+}
+.cheat-icon{font-size:56px;margin-bottom:16px}
+.cheat-title{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.cheat-msg{font-size:14px;color:var(--txt2);line-height:1.65;margin-bottom:8px}
+.cheat-count{
+  font-size:13px;font-family:var(--mono);font-weight:600;
+  color:var(--amber);background:var(--amber-lt);
+  padding:6px 14px;border-radius:6px;display:inline-block;margin-bottom:24px;
+}
 </style>
 </head>
 <body>
@@ -897,10 +920,23 @@ function startQuiz() {
   const name = document.getElementById('salesName').value.trim();
   if (!name) return toast('กรุณาใส่ชื่อ','error');
   const shuffled = [...S.questions].sort(()=>Math.random()-.5);
-  S.quiz = { sales:name, qs:shuffled, idx:0, ans:[], done:false };
+  S.quiz = { sales:name, qs:shuffled, idx:0, ans:[], done:false, cheatCount:0, optMap:{} };
   document.getElementById('qzProd').textContent  = S.cur.name;
   document.getElementById('qzSales').textContent = name;
   tab('quiz'); renderQz();
+}
+
+function shuffleOptions(q) {
+  // Shuffle A-D and return new mapping: displayKey -> { originalKey, text }
+  const keys = ['A','B','C','D'];
+  const entries = keys.map(k => ({ orig: k, text: q.options[k] }));
+  for (let i = entries.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [entries[i], entries[j]] = [entries[j], entries[i]];
+  }
+  const map = {};
+  keys.forEach((k, i) => { map[k] = entries[i]; });
+  return map;
 }
 
 function renderQz() {
@@ -914,24 +950,41 @@ function renderQz() {
   document.getElementById('qzNext').style.display = 'none';
   S.quiz.done = false;
 
-  document.getElementById('qzOpts').innerHTML = ['A','B','C','D'].map(k => `
-    <button class="opt-btn" onclick="ansQ('${k}')">
-      <span class="opt-k">${k}</span>
-      <span>${q.options[k]}</span>
-    </button>`).join('');
+  // Shuffle options and store mapping for answer checking
+  S.quiz.optMap = shuffleOptions(q);
+  const keys = ['A','B','C','D'];
+  document.getElementById('qzOpts').innerHTML = keys.map(dispKey => {
+    const { text } = S.quiz.optMap[dispKey];
+    return `<button class="opt-btn" onclick="ansQ('${dispKey}')">
+      <span class="opt-k">${dispKey}</span>
+      <span>${text}</span>
+    </button>`;
+  }).join('');
 }
 
 function ansQ(chosen) {
   if (S.quiz.done) return;
   S.quiz.done = true;
   const q = S.quiz.qs[S.quiz.idx];
-  S.quiz.ans.push({qid:q.id,question:q.question,chosen,correct:q.answer});
+  const map = S.quiz.optMap;
 
-  document.querySelectorAll('.opt-btn').forEach((btn,i) => {
-    const k = ['A','B','C','D'][i];
+  // Find which display key maps to the original correct answer
+  const correctDisplayKey = Object.keys(map).find(dk => map[dk].orig === q.answer);
+  const chosenOrigKey = map[chosen].orig;
+
+  S.quiz.ans.push({
+    qid: q.id, question: q.question,
+    chosen: chosenOrigKey,       // store original key for Sheet
+    chosenDisplay: chosen,       // display key shown to user
+    correct: q.answer,
+    correctDisplay: correctDisplayKey
+  });
+
+  document.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    const dk = ['A','B','C','D'][i];
     btn.disabled = true;
-    if (k===q.answer) btn.classList.add('correct');
-    else if (k===chosen) btn.classList.add('wrong');
+    if (dk === correctDisplayKey) btn.classList.add('correct');
+    else if (dk === chosen && chosen !== correctDisplayKey) btn.classList.add('wrong');
   });
 
   if (q.explanation) {
@@ -983,6 +1036,13 @@ async function showResult() {
       </span>
       <span class="badge ${a.chosen===a.correct?'badge-ok':'badge-ng'}">${a.chosen===a.correct?'✓ ถูก':'✗ ผิด'}</span>
     </div>`).join('');
+  // cheat count summary
+  if (S.quiz.cheatCount > 0) {
+    document.getElementById('rDetail').innerHTML +=
+      `<div style="margin-top:16px;padding:12px 16px;background:var(--amber-lt);border-left:3px solid var(--amber);border-radius:0 8px 8px 0;font-size:13px;color:#7a5c00">
+        ⚠️ มีการออกจากหน้านี้ระหว่างสอบ <strong>${S.quiz.cheatCount} ครั้ง</strong>
+      </div>`;
+  }
 
   tab('result');
   try {
@@ -990,9 +1050,10 @@ async function showResult() {
       action:'saveResult', salesName:sales,
       productId:S.cur.id, productName:S.cur.name,
       score, total, passed,
+      cheatCount:S.quiz.cheatCount,
       detail:ans.map(a=>({q:a.question,chosen:a.chosen,correct:a.correct}))
     });
-  } catch(e) { console.warn('save result failed',e); }
+  } catch(e) { console.error('save result FAILED:', e); toast('⚠️ บันทึกผลสอบไม่ได้: '+e.message,'error'); }
 }
 
 // ══════════════════════════════════════════════
@@ -1108,10 +1169,50 @@ function toast(msg, type='info') {
 }
 
 // ══════════════════════════════════════════════
+//  ANTI-CHEAT — Visibility API
+// ══════════════════════════════════════════════
+function isQuizActive() {
+  return document.getElementById('pg-quiz').style.display !== 'none';
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && isQuizActive() && !S.quiz.done) {
+    S.quiz.cheatCount = (S.quiz.cheatCount || 0) + 1;
+    document.getElementById('cheatCntTxt').textContent =
+      `ออกจากหน้าไปแล้ว ${S.quiz.cheatCount} ครั้ง`;
+    document.getElementById('cheatOv').style.display = 'flex';
+  }
+});
+
+window.addEventListener('blur', () => {
+  if (isQuizActive() && !S.quiz.done && !document.hidden) {
+    // window lost focus (e.g. opened another app)
+    S.quiz.cheatCount = (S.quiz.cheatCount || 0) + 1;
+    document.getElementById('cheatCntTxt').textContent =
+      `ออกจากหน้าไปแล้ว ${S.quiz.cheatCount} ครั้ง`;
+    document.getElementById('cheatOv').style.display = 'flex';
+  }
+});
+
+function resumeQuiz() {
+  document.getElementById('cheatOv').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════
 document.getElementById('apiInp').value = S.apiUrl;
 loadHome().then(()=>populateHistFilter());
 </script>
+<!-- CHEAT WARNING -->
+<div class="cheat-overlay" id="cheatOv" style="display:none">
+  <div class="cheat-box">
+    <div class="cheat-icon">👀</div>
+    <div class="cheat-title">ออกจากหน้าสอบ!</div>
+    <div class="cheat-msg">ระบบตรวจพบว่าคุณออกจากหน้านี้ระหว่างทำแบบทดสอบ<br>การกระทำนี้จะถูกบันทึกในผลสอบ</div>
+    <div class="cheat-count" id="cheatCntTxt">ครั้งที่ 1</div>
+    <button class="btn btn-sky" style="width:100%" onclick="resumeQuiz()">กลับมาทำต่อ →</button>
+  </div>
+</div>
 </body>
 </html>
