@@ -1,7 +1,7 @@
 // Vercel Serverless Function — proxy to Google Apps Script
 // Server-to-server: no CORS restriction
 
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbybsTp_O1oNMX4trh-FnSxzZnqJMFlQLrXHarnNyrEu8rG43a8xumHeYOBhEvXmRw5a/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwp2Qsbwdi8BooXadJv0iYUNzabPxigRPnm8cFs_DckUc05fxKdFlBU6VQk-zLKT6RR/exec';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');

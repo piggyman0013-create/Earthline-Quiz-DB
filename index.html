@@ -430,38 +430,31 @@ button{cursor:pointer;font-family:var(--sans)}input,select,textarea{font-family:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script>
 // ══ CONFIG ══
-const API_URL = 'https://script.google.com/macros/s/AKfycbybsTp_O1oNMX4trh-FnSxzZnqJMFlQLrXHarnNyrEu8rG43a8xumHeYOBhEvXmRw5a/exec';
-
 // ══ STATE ══
 const S = {
-  apiUrl: localStorage.getItem('el_api_url') || API_URL,
   isAdmin: false,
   products: [], questions: [], cur: null,
   importedQs: [],
   quiz: { sales:'', qs:[], idx:0, ans:[], done:false, cheatCount:0, optMap:{} }
 };
-localStorage.removeItem('el_admin');
 
-// ══ API via JSONP ══
-function callApi(params) {
-  return new Promise((resolve, reject) => {
-    if (!S.apiUrl) return reject(new Error('กรุณาตั้งค่า API URL'));
-    const cb = 'cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-    const pairs = Object.entries(params).map(([k,v]) =>
-      encodeURIComponent(k) + '=' + encodeURIComponent(typeof v === 'object' ? JSON.stringify(v) : v));
-    pairs.push('callback=' + cb);
-    const url = S.apiUrl + '?' + pairs.join('&');
-    const script = document.createElement('script');
-    const timer = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 20000);
-    function cleanup() { clearTimeout(timer); delete window[cb]; script.remove(); }
-    window[cb] = (data) => { cleanup(); data.ok ? resolve(data.data) : reject(new Error(data.error)); };
-    script.onerror = () => { cleanup(); reject(new Error('โหลดไม่ได้ — ตรวจสอบ URL')); };
-    script.src = url;
-    document.head.appendChild(script);
-  });
+// ══ API — Vercel proxy (no CORS) ══
+async function get(params) {
+  const r = await fetch('/api/quiz?' + new URLSearchParams(params));
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error);
+  return j.data;
 }
-const get  = (p)    => callApi(p);
-const post = (body) => callApi({ payload: JSON.stringify(body) });
+async function post(body) {
+  const r = await fetch('/api/quiz', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error);
+  return j.data;
+}
 
 // ══ TABS ══
 const PAGES = ['home','manage','prequiz','quiz','result','history','settings'];
@@ -915,7 +908,7 @@ function toast(msg,type='info'){
 }
 
 // ══ INIT ══
-document.getElementById('apiInp').value=S.apiUrl;
+document.getElementById('apiInp').value='';
 loadHome().then(()=>populateHistFilter());
 </script>
 </body>
